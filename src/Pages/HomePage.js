@@ -7,7 +7,16 @@ export default function HomePage(){
     return (
         <Container>
             <Body>
-                <Post text={"Oia"} />
+                <Post 
+                    name = {"Levylson Pereira"} 
+                    text = {"Muito bacana meoo!"}
+                    hashtag = {"#helloWorld"}
+                />
+                <Post 
+                    name = {"Juvenal Juvêncio"} 
+                    text = {"AAAAAAAAAAAAAAA"}
+                    hashtag = {"#teste"}
+                />
             </Body>
         </Container>
     )
@@ -16,6 +25,7 @@ export default function HomePage(){
 
 
 const Container = styled.div`
+    padding-top: 10em;
     display: flex;
     justify-content: center;
     align-items: center;

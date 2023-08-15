@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import UrlPreview from './UrlPreview';
 
 export default function Post(props) {
     return (
@@ -12,10 +13,16 @@ export default function Post(props) {
                     <span>13 likes</span>
                 </ContainerLikes>
             </LeftSection>
-            {props.text}
+            <h2>{props.name}</h2>
+            <p>{props.text} <b>{props.hashtag}</b></p>
+            <UrlPreview 
+                text={"testee"} 
+            />  
         </ContainerPost>
     )
 }
+
+
 
 const ContainerLikes = styled.div`
     display: flex;
