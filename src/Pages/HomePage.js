@@ -1,12 +1,16 @@
 import styled from 'styled-components'
 import React from 'react';
 import Post from '../components/Post';
-
+import FormPost from '../components/FormPost';
 
 export default function HomePage(){
     return (
         <Container>
             <Body>
+                <TitleContainer>
+                    <span>timeline</span>
+                </TitleContainer>
+                <FormPost />
                 <Post 
                     name = {"Levylson Pereira"} 
                     text = {"Muito bacana meoo!"}
@@ -22,7 +26,16 @@ export default function HomePage(){
     )
 }
 
-
+const TitleContainer = styled.div`
+    color: #FFF;
+    font-family: Ubuntu, sans-serif;
+    font-size: 43px;
+    font-weight: 700;
+    display: flex;
+    width: 100%;
+    align-items: start ;
+    padding-bottom: 0.6em;
+`
 
 const Container = styled.div`
     padding-top: 10em;
@@ -45,7 +58,7 @@ const Body = styled.div`
 	flex-wrap: wrap;
 	gap: 2em;
 
-    padding: 4em;
+    padding: 2em;
     width: 50%;
     height: 60%;
 	
