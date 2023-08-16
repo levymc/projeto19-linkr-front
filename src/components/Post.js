@@ -71,37 +71,43 @@ export default function Post(props) {
     const handleKeyDown = async (event) => {
         if (event.key === 'Enter') {
             setLoading(true);
-
-            //requisição
-            axios.put('http://localhost:5000/posts')
-            .then(response => {
-                console.log(response.data);
-            })
-            .catch(error => {
-                setEditedText(editModeText)
-                setEditedHashtags(editedHashtags);
-                setIsEditing(false);
-                alert("Erro ao atualizar o post");
-            });
-
+    
             setEditedText(onlyText);
             setEditedHashtags(hashtagWords.join(" "));
-
+    
             const words = editedContent.split(/\s+/);
             const hashtagWordsArray = words.filter(word => word.startsWith("#"));
             setHashtagWords(hashtagWordsArray);
             
             setLoading(false);
             setIsEditing(false);
+    
+            try {
+                await axios.put('http://localhost:5000/posts', {
+                    text: onlyText,
+                    hashtags: hashtagWords.join(" ")
+                });
+                console.log(onlyText, "texto atualizado");
+                console.log(hashtagWords.join(" "), "hashtags atualizadas")
+            } catch (error) {
+                setEditedText(editModeText)
+                setEditedHashtags(editedHashtags);
+                setIsEditing(false);
+                console.error("Erro ao atualizar o post", error);
+                alert("Erro ao atualizar o post");
+            }
         } else if (event.key === 'Escape') {
             setIsEditing(false);
         }
     };
-
-    console.log(editedHashtags)
-    console.log(editedText)
-    console.log(loading)
-
+    const Request = async (event) => {
+        if (event.key === 'Enter') {
+            
+        }
+    }
+    // console.log(editedHashtags)
+    // console.log(editedText)
+    // console.log(loading)
 
     return (
         <ContainerPost>
@@ -126,6 +132,7 @@ export default function Post(props) {
                     onChange={handleInputChange}
                     onBlur={handleInputBlur}
                     onKeyDown={handleKeyDown}
+                    disabled={loading}
                 />
             ) : (
                 <p>
