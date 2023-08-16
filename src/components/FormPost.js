@@ -1,14 +1,37 @@
 import styled from 'styled-components'
 import React, { useState } from 'react';
+import axios from 'axios'
+import { simpleModal } from './modais/modais.js';
+// import ReactLoading from 'react-loading';
+import sleep from './util/sleep.js';
+import { usePostsContext } from './Context.js';
 
 export default function FormPost(props) {
-    const [urlValue, setUrlValue] = useState('')
+    const { postsInfos, setPostsInfos, newPost, setNewPost } = usePostsContext()
+    const [postUrl, setPostUrl] = useState('')
     const [contentValue, setContentValue] = useState('')
+    const [loading, setLoading] = useState(false)
 
-    const handleSubtmit = (e) => {
+    const handleSubtmit = async (e) => {
         e.preventDefault()
-        console.log('URL:', urlValue)
-        console.log('Content:', contentValue)
+        setLoading(true)
+
+        // await sleep(20)
+        axios.post('http://localhost:5000/newPost', {
+            postUrl: postUrl,
+            content: contentValue
+        }).then(res => {
+            console.log(res.data)
+            setNewPost(res.data)
+            simpleModal("Postagem enviada com sucesso!", "success")
+            setPostUrl("")
+            setContentValue("")
+        }).catch(err => {
+            console.error(err)
+            simpleModal("Houve um erro ao publicar seu link", "error")
+        }).finally(() => {
+            setLoading(false)
+        })
     }
 
     return (
@@ -20,8 +43,10 @@ export default function FormPost(props) {
             <ContainerUrl>
                 <input
                     placeholder='https://'
-                    value={urlValue}
-                    onChange={(e) => setUrlValue(e.target.value)}
+                    value={postUrl}
+                    onChange={(e) => setPostUrl(e.target.value)}
+                    type="url"
+                    required
                 />
             </ContainerUrl>
             <ContainerContent>
@@ -29,22 +54,43 @@ export default function FormPost(props) {
                     placeholder='Awesome article about #javascript'
                     value={contentValue}
                     onChange={(e) => setContentValue(e.target.value)}
+                    type="text"
                 />
             </ContainerContent>
-            <Btn type="submit">Publish</Btn>
+            <ContainerBtn>
+                <Btn type="submit" backGround={loading ? "grey" : "#1877F2"} disabled={loading}>
+                    {loading 
+                        ? "Publishing..."
+                        : "Publish"
+                    }
+                    
+                </Btn>
+            </ContainerBtn>
         </SCFormPost>
     );
 }
 
+const ContainerBtn = styled.div`
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    height: 33px;
+`
+
+// const StyledLoading = styled(ReactLoading)`
+//     position: absolute;
+//     top: -28px;
+//     right: 12px;
+//     z-index: 999;
+// `
+
 const Btn = styled.button`
-    position: absolute;
-    bottom: 3em;
-    right: 2em;
     width: 112px;
     height: 33px;
     border-radius: 5px;
     border: 0;
-    background: #1877F2;
+    background: ${props => props.backGround};
+    margin-right: 2em;
 
     color: #FFF;
     font-family: Lato;
@@ -53,9 +99,14 @@ const Btn = styled.button`
     font-weight: 700;
     line-height: normal;
     cursor: pointer;
+    position: relative;
 `
 
 const StyledInput = styled.input`
+    display: flex;
+    align-items: start !important;
+    justify-content: start !important;
+
     height: 5em;
     width: 100%;
     background-color: #EFEFEF;
@@ -64,7 +115,7 @@ const StyledInput = styled.input`
     padding: 0.25em;
     padding-left: 1em;
     font-family: Lato;
-    font-size: 18px;
+    font-size: 15px;
     font-style: normal;
     font-weight: 300;
     line-height: normal;

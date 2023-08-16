@@ -1,26 +1,48 @@
-import styled from 'styled-components'
-import React from 'react';
+import styled from 'styled-components';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import Post from '../components/Post';
 import FormPost from '../components/FormPost';
+import ReactLoading from 'react-loading';
+import { usePostsContext } from '../components/Context';
 
-export default function HomePage(){
+export default function HomePage() {
+    const { postsInfos, setPostsInfos, newPost, setNewPost } = usePostsContext()
+
+    useEffect(() => {
+        axios.get('http://localhost:5000/posts')
+            .then(response => {
+                setPostsInfos(response.data);
+            })
+            .catch(error => {
+                console.error("Erro ao obter os postInfo:", error);
+            });
+    }, [newPost]);
+
+
     return (
         <Container>
             <Body>
-                <TitleContainer>
-                    <span>timeline</span>
-                </TitleContainer>
-                <FormPost />
-                <Post 
-                    name = {"Levylson Pereira"} 
-                    text = {"Muito bacana meoo!"}
-                    hashtag = {"#helloWorld"}
-                />
-                <Post 
-                    name = {"Juvenal Juvêncio"} 
-                    text = {"AAAAAAAAAAAAAAA"}
-                    hashtag = {"#teste"}
-                />
+                {postsInfos
+                    ? <>
+                        <TitleContainer>
+                        <span onClick={() => console.log(postsInfos)}>timeline</span>
+                        </TitleContainer>
+                        <FormPost />
+                        {postsInfos.posts && postsInfos.posts.map((post, i) => {
+                            return (
+                                <Post 
+                                    key = {i}
+                                    name = {"Juvenciuus"}
+                                    text = {post.content}
+                                    hashtag = {"#TESTE"}
+                                />
+                            )
+                        })}
+                    </>
+                    : <ReactLoading type={"spin"} color={"blue"} height={667} width={375} />
+                }
+                
             </Body>
         </Container>
     )
