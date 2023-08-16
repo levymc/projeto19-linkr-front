@@ -6,14 +6,15 @@ import { BsFillPencilFill } from 'react-icons/bs';
 import { BiSolidTrashAlt } from 'react-icons/bi';
 
 export default function Post(props) {
+    const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedText, setEditedText] = useState(props.text);
     const [editModeText, setEditModeText] = useState(editedText);
     const [hashtagWords, setHashtagWords] = useState([]);
     const [editedHashtags, setEditedHashtags] = useState(props.hashtag);
+    const [onlyText, setOnlyText] = useState(props.text)
     const [editedContent, setEditedContent] = useState(`${props.text} ${props.hashtag}`);
     
-    console.log(editedText)
 
     const editFieldRef = useRef();
 
@@ -27,12 +28,12 @@ export default function Post(props) {
 
     const handleEditIconClick = () => {
         if (isEditing) {
-            //setEditedText(editModeText);
+            setEditedText(editModeText);
             setIsEditing(false);
             setEditedContent(`${editedText} ${editedHashtags}`);
         } else {
             setEditModeText(editedText);
-            setEditedHashtags(props.hashtag);
+            setEditedHashtags(editedHashtags);
         }
         setIsEditing(!isEditing);
     };
@@ -51,8 +52,7 @@ export default function Post(props) {
         setHashtagWords(hashtagWordsArray);
 
         const nonHashtagWordsArray = words.filter(word => !word.startsWith("#"));
-        const textWithoutHashtags = nonHashtagWordsArray.join(" ");
-        console.log(textWithoutHashtags)
+        setOnlyText(nonHashtagWordsArray.join(" "));
         if (!isEditing) {
             setEditedHashtags(hashtagWordsArray.join(" "));
         }
@@ -64,17 +64,33 @@ export default function Post(props) {
     };
 
     const handleEditIconMouseDown = (event) => {
-        event.preventDefault(); // Impede que o foco seja roubado do textarea
+        event.preventDefault();
     };
 
-    const handleKeyDown = (event) => {
-        if (event.key === 'Escape') {
+    const handleKeyDown = async (event) => {
+        if (event.key === 'Enter') {
+            setLoading(true);
+
+            // Simule uma requisição (você deve substituir isso com a sua lógica de requisição real)
+            //await new Promise((resolve) => setTimeout(resolve, 2000));
+
+            // Atualize os estados com os novos valores
+            setEditedText(onlyText);
+            setEditedHashtags(hashtagWords.join(" "));
+
+            const words = editedContent.split(/\s+/);
+            const hashtagWordsArray = words.filter(word => word.startsWith("#"));
+            setHashtagWords(hashtagWordsArray);
+            
+            setLoading(false);
+            setIsEditing(false);
+        } else if (event.key === 'Escape') {
             setIsEditing(false);
         }
     };
 
-    console.log(hashtagWords)
     console.log(editedHashtags)
+    console.log(editedText)
 
     return (
         <ContainerPost>
@@ -102,15 +118,10 @@ export default function Post(props) {
                 />
             ) : (
                 <p>
-                    {editedText}{" "}
-                    {
-                        <b>{editedHashtags}</b>
-                    }
+                    {onlyText}{" "}{<b>{editedHashtags}</b>}
                 </p>
 
             )}
-
-            {/* <p>{props.text} <b>{props.hashtag}</b></p> */}
             <UrlPreview
                 text={"testee"}
             />

@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import HomePage from './Pages/HomePage';
 import { ContextProvider } from './components/Context';
+import { EditPost } from './components/editField/editField';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -12,6 +13,7 @@ root.render(
         <ContextProvider> 
             <Routes>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/editPost" element={<EditPost />} />
             </Routes>
         </ContextProvider>
     </BrowserRouter>
