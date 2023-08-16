@@ -4,6 +4,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import UrlPreview from './UrlPreview';
 import { BsFillPencilFill } from 'react-icons/bs';
 import { BiSolidTrashAlt } from 'react-icons/bi';
+import axios from "axios";
 
 export default function Post(props) {
     const [loading, setLoading] = useState(false);
@@ -71,10 +72,18 @@ export default function Post(props) {
         if (event.key === 'Enter') {
             setLoading(true);
 
-            // Simule uma requisição (você deve substituir isso com a sua lógica de requisição real)
-            //await new Promise((resolve) => setTimeout(resolve, 2000));
+            //requisição
+            axios.put('http://localhost:5000/posts')
+            .then(response => {
+                console.log(response.data);
+            })
+            .catch(error => {
+                setEditedText(editModeText)
+                setEditedHashtags(editedHashtags);
+                setIsEditing(false);
+                alert("Erro ao atualizar o post");
+            });
 
-            // Atualize os estados com os novos valores
             setEditedText(onlyText);
             setEditedHashtags(hashtagWords.join(" "));
 
@@ -91,6 +100,8 @@ export default function Post(props) {
 
     console.log(editedHashtags)
     console.log(editedText)
+    console.log(loading)
+
 
     return (
         <ContainerPost>
@@ -118,7 +129,7 @@ export default function Post(props) {
                 />
             ) : (
                 <p>
-                    {onlyText}{" "}{<b>{editedHashtags}</b>}
+                    {editedText}{" "}{<b>{editedHashtags}</b>}
                 </p>
 
             )}
