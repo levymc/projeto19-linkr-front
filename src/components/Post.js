@@ -74,6 +74,11 @@ export default function Post(props) {
 
     console.log(hashtagWords)
     console.log(editedHashtags)
+import React from 'react';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import UrlPreview from './UrlPreview';
+
+export default function Post(props) {
     return (
         <ContainerPost>
             <LeftSection>
@@ -134,7 +139,6 @@ const PerfilImg = styled.img`
     height: 50px;
     border-radius: 26.5px;
 
-
 `
 const ContainerPost = styled.div`
     height: 17em;   
@@ -186,6 +190,6 @@ const LeftSection = styled.section`
 
 const IconsEditTrash = styled.div`
     .pencil {
-            margin-right: 10px;
-        }
+        margin-right: 10px;
+    }
 `
