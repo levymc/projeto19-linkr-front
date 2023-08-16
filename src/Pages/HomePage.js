@@ -10,7 +10,7 @@ export default function HomePage(){
                 <Post 
                     name = {"Levylson Pereira"} 
                     text = {"Muito bacana meoo!"}
-                    hashtag = {"#helloWorld"}
+                    hashtag = {"#helloWorld #teste #oi"}
                 />
                 <Post 
                     name = {"Juvenal Juvêncio"} 

@@ -4,6 +4,7 @@ import './index.css';
 import { BrowserRouter ,Routes ,Route } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import HomePage from './Pages/HomePage';
+import { EditPost } from './components/editField/editField';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -11,6 +12,7 @@ root.render(
         <Routes>
             {/* <Route exact path="/" component={App} /> Rota para a página principal */}
             <Route path="/" element={<HomePage/>} />
+            <Route path="/editPost" element={<EditPost />} />
         </Routes>
     </BrowserRouter>
 )

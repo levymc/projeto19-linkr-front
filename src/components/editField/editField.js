@@ -1,12 +1,15 @@
 import { EditField } from "./Styled";
 import { BsFillPencilFill } from 'react-icons/bs';
 import { BiSolidTrashAlt } from 'react-icons/bi';
+
 import React, { useState, useRef, useEffect } from 'react';
 
-export function EditPost() {
+export function EditPost(props) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState("Muito maneiro esse tutorial de Material UI com React, deem uma olhada! #react #material");
   const [editModeText, setEditModeText] = useState(editedText);
+  const [editedHashtags, setEditedHashtags] = useState(props.hashtag);
+  console.lof(editedHashtags)
   const editFieldRef = useRef();
 
   useEffect(() => {

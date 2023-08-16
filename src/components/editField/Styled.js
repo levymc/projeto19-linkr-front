@@ -25,7 +25,7 @@ export const EditField = styled.div`
         .pencil {
             margin-right: 30px;
         }
-        
+
         .trash {
             margin-right: 30px;
         }
@@ -34,6 +34,7 @@ export const EditField = styled.div`
 
     textarea {
         margin-top: 10px;
+        height: 100px;
         width: calc(100% - 100px); /* Mesma largura que o <p> */
         margin-left: 30px;
         margin-right: 30px;
