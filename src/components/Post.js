@@ -12,6 +12,7 @@ export default function Post(props) {
     const [hashtagWords, setHashtagWords] = useState([]);
     const [editedHashtags, setEditedHashtags] = useState(props.hashtag);
     const [editedContent, setEditedContent] = useState(`${props.text} ${props.hashtag}`);
+    
     console.log(editedText)
 
     const editFieldRef = useRef();
@@ -74,11 +75,7 @@ export default function Post(props) {
 
     console.log(hashtagWords)
     console.log(editedHashtags)
-import React from 'react';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import UrlPreview from './UrlPreview';
 
-export default function Post(props) {
     return (
         <ContainerPost>
             <LeftSection>
