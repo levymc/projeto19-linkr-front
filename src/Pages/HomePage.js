@@ -1,17 +1,16 @@
 import styled from "styled-components";
 import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-
 import axios from "axios";
 import Post from "../components/Post";
 import FormPost from "../components/FormPost";
 import ReactLoading from "react-loading";
 import { usePostsContext } from "../components/Context";
+import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import Header from "../components/Header/Header";
+
 export default function HomePage() {
   const navigate = useNavigate();
-
   const { postsInfos, setPostsInfos, newPost, setNewPost } = usePostsContext();
   const { user } = useContext(AuthContext);
 
@@ -43,16 +42,17 @@ export default function HomePage() {
               <span onClick={() => console.log(postsInfos)}>timeline</span>
             </TitleContainer>
             <FormPost />
-            {/* {postsInfos.posts && postsInfos.posts.map((post, i) => {
-                            return ( */}
-            <Post
-              // key = {i}
-              name={"Juvenciuus"}
-              text={"post.content"}
-              hashtag={"#TESTE"}
-            />
-            {/* )
-                        })} */}
+            {postsInfos.posts &&
+              postsInfos.posts.map((post, i) => {
+                return (
+                  <Post
+                    key={i}
+                    name={"Juvenciuus"}
+                    text={post.content}
+                    hashtag={"#TESTE"}
+                  />
+                );
+              })}
           </>
         ) : (
           <ReactLoading type={"spin"} color={"blue"} height={667} width={375} />
