@@ -38,10 +38,16 @@ export default function Post(props) {
         setDeleteModalOpen(false);
     };
 
-    const handleDeleteConfirm = () => {
-        // Aqui você pode realizar a lógica de exclusão
-        console.log('Excluir post'); // Exemplo de log, substitua pela lógica real
-        closeDeleteModal();
+    const handleDeleteConfirm = async () => {
+        try {
+            await axios.delete('http://localhost:5000/posts', {
+                //postId: props.userId
+            });
+        } catch (error) {
+            console.error("Erro ao excluir o post", error);
+            closeDeleteModal();
+            alert("Erro ao excluir o post");
+        }
     };
 
     const handleEditIconClick = () => {
@@ -253,7 +259,7 @@ const LeftSection = styled.section`
 
 const IconsEditTrash = styled.div`
     .pencil {
-        margin-right: 10px;
+        margin-right: 15px;
         cursor: pointer;
     }
     .trash{
