@@ -39,6 +39,7 @@ export default function Post(props) {
     };
 
     const handleDeleteConfirm = async () => {
+        //requisição
         try {
             await axios.delete('http://localhost:5000/posts', {
                 //postId: props.userId
@@ -317,5 +318,5 @@ const BackgroundOverlay = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.90);
-  z-index: 10; // Deve estar acima do resto do conteúdo
+  z-index: 10; 
 `;
