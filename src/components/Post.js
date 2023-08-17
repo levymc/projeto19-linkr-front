@@ -35,6 +35,7 @@ export default function Post(props) {
         } else {
             setEditModeText(editedText);
             setEditedHashtags(editedHashtags);
+            setEditedContent(`${editedText} ${editedHashtags}`)
         }
         setIsEditing(!isEditing);
     };
@@ -85,7 +86,8 @@ export default function Post(props) {
             try {
                 await axios.put('http://localhost:5000/posts', {
                     text: onlyText,
-                    hashtags: hashtagWords.join(" ")
+                    hashtags: hashtagWords.join(" "),
+                    //postId: props.userId
                 });
                 console.log(onlyText, "texto atualizado");
                 console.log(hashtagWords.join(" "), "hashtags atualizadas")
@@ -100,11 +102,7 @@ export default function Post(props) {
             setIsEditing(false);
         }
     };
-    const Request = async (event) => {
-        if (event.key === 'Enter') {
-            
-        }
-    }
+    
     // console.log(editedHashtags)
     // console.log(editedText)
     // console.log(loading)
@@ -185,14 +183,20 @@ const ContainerPost = styled.div`
     }
 
     textarea {
-        margin-top: 15px;
-        margin-bottom: 10px;
+        margin-top: 7px;
+        margin-bottom: 15px;
         color: #4C4C4C;
         font-family: Lato;
         font-size: 17px;
         border: none;
         border-radius: 7px;
         resize: none;
+        word-wrap: break-word; 
+        white-space: pre-wrap;
+        overflow-y: auto; 
+        min-height: 50px; 
+        max-height: 100px; 
+        height: auto;
         &:focus {
         outline: none;
         }
