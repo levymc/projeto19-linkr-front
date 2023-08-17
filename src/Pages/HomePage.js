@@ -1,15 +1,19 @@
 import styled from "styled-components";
 import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import Post from "../components/Post";
 import FormPost from "../components/FormPost";
 import ReactLoading from "react-loading";
 import { usePostsContext } from "../components/Context";
 import AuthContext from "../context/AuthContext";
-
+import Header from "../components/Header/Header";
 export default function HomePage() {
+  const navigate = useNavigate();
+
   const { postsInfos, setPostsInfos, newPost, setNewPost } = usePostsContext();
-  const { token, user } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     axios
@@ -22,8 +26,16 @@ export default function HomePage() {
       });
   }, [newPost]);
 
+  useEffect(() => {
+    if (user === null) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   return (
     <Container>
+      <Header />
+
       <Body>
         {postsInfos ? (
           <>
