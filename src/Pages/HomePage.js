@@ -33,6 +33,7 @@ export default function HomePage() {
 
   return (
     <Container>
+      <Header />
       <Body>
         {postsInfos ? (
           <>
