@@ -6,6 +6,7 @@ import { BsFillPencilFill } from 'react-icons/bs';
 import { BiSolidTrashAlt } from 'react-icons/bi';
 import axios from "axios";
 import ReactModal from 'react-modal';
+import LikeButton from './LikeButton';
 
 export default function Post(props) {
     const [loading, setLoading] = useState(false);
@@ -134,10 +135,7 @@ export default function Post(props) {
         <ContainerPost>
             <LeftSection>
                 <PerfilImg src="https://yt3.googleusercontent.com/oZCGpPQc5qat2YIzVs_h1LTvrtpV6G--Q2CopkOoAa7d1WvHDohPzWO-vSEnQ4GljcQOO_6QkQ=s900-c-k-c0x00ffffff-no-rj" />
-                <ContainerLikes>
-                    <FavoriteBorderIcon />
-                    <span>13 likes</span>
-                </ContainerLikes>
+                <LikeButton />
             </LeftSection>
             <h2>{props.name}
                 <IconsEditTrash>
