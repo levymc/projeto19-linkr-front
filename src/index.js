@@ -1,12 +1,17 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import App from "./App";
+import "./index.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import reportWebVitals from "./reportWebVitals";
+import HomePage from "./Pages/HomePage";
 import { ContextProvider } from "./components/Context";
+import { EditPost } from "./components/editField/editField";
 import reportWebVitals from "./reportWebVitals";
 import Global from "./styles/Global";
 import ResetCSS from "./styles/Reset";
-ReactDOM.render(
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ContextProvider>

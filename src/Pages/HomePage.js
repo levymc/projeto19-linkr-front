@@ -33,8 +33,6 @@ export default function HomePage() {
 
   return (
     <Container>
-      <Header />
-
       <Body>
         {postsInfos ? (
           <>
@@ -42,17 +40,16 @@ export default function HomePage() {
               <span onClick={() => console.log(postsInfos)}>timeline</span>
             </TitleContainer>
             <FormPost />
-            {postsInfos.posts &&
-              postsInfos.posts.map((post, i) => {
-                return (
-                  <Post
-                    key={i}
-                    name={"Juvenciuus"}
-                    text={post.content}
-                    hashtag={"#TESTE"}
-                  />
-                );
-              })}
+            {/* {postsInfos.posts && postsInfos.posts.map((post, i) => {
+                            return ( */}
+            <Post
+              // key = {i}
+              name={"Juvenciuus"}
+              text={"post.content"}
+              hashtag={"#TESTE"}
+            />
+            {/* )
+                        })} */}
           </>
         ) : (
           <ReactLoading type={"spin"} color={"blue"} height={667} width={375} />
