@@ -39,7 +39,6 @@ export default function Post(props) {
     };
 
     const handleDeleteConfirm = async () => {
-        //requisição
         try {
             await axios.delete('http://localhost:5000/posts', {
                 //postId: props.userId
