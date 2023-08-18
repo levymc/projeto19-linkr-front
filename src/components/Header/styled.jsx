@@ -1,10 +1,10 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Container = styled.div`
-  background-color: black;
+  background-color: #151515;
   font-size: 20px;
   width: 100%;
-  height: 10vh;
+  height: 7.031vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -18,7 +18,7 @@ export const Container = styled.div`
     width: 100vw;
     padding: 0 10px;
   }
-`
+`;
 
 export const Menu = styled.div`
   display: flex;
@@ -30,11 +30,11 @@ export const Menu = styled.div`
   @media screen and (max-width: 480px) {
     width: 20vw;
   }
-`
+`;
 
 export const Title = styled.h1`
   color: white;
-  font-family: 'Oleo Script', cursive;
+  font-family: "Passion One";
   font-size: 40px;
   padding-left: 30px;
   margin-right: -150px;
@@ -43,16 +43,16 @@ export const Title = styled.h1`
     font-size: 30px;
     padding-left: 10px;
   }
-`
+`;
 
 export const Icon = styled.div`
   color: white;
   cursor: pointer;
-`
+`;
 
 export const UserImage = styled.img`
-  width: 4.5vw;
-  height: 4.5vw;
+  width: 3.681vw;
+  height: 3.681vw;
   border-radius: 50%;
   cursor: pointer;
 
@@ -60,17 +60,27 @@ export const UserImage = styled.img`
     width: 6vh;
     height: 6vh;
   }
-`
-
+`;
 export const LogoutOption = styled.div`
+  width: 150px;
+  height: 47px;
   color: white;
   cursor: pointer;
-  font-size: 18px;
   position: absolute;
-  top: 90%;
+  top: 100%;
   right: 0;
-  background-color: black;
-  padding: 15px;
-  padding-right: 70px;
-  border-radius: 10px;
-`
+  margin-bottom: 5px; /* Adjust this value if needed */
+  background-color: #151515;
+  border-radius: 0 0 0 20px;
+  transition: background-color 0.3s, color 0.3s;
+
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-family: "Lato";
+  font-size: 18px;
+  font-weight: 700;
+  border: solid 1px black;
+`;

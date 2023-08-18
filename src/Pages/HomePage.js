@@ -32,7 +32,7 @@ export default function HomePage() {
 
   return (
     <Container>
-      {/* <Header /> */}
+      <Header />
       <Body onClick={() => console.log(postsInfos.posts)}>
         {postsInfos ? (
           <>
