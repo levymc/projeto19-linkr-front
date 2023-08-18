@@ -32,7 +32,7 @@ export default function HomePage() {
 
   return (
     <Container>
-      {/* <Header /> */}
+      <Header />
       <Body onClick={() => console.log(postsInfos)}>
         {postsInfos.posts ? (
 
@@ -80,7 +80,7 @@ const TitleContainer = styled.div`
 `;
 
 const Container = styled.div`
-  padding-top: 10em;
+  padding-top: 6em;
   display: flex;
   justify-content: center;
   align-items: center;
