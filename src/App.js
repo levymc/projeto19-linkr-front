@@ -1,14 +1,16 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { EditPost } from './components/editField/editField';
+import { useState } from "react";
+import AuthContext from "./context/AuthContext";
+
+import Routes from "./routes/index.routes";
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/editPost" element={<EditPost />} />
-      </Routes>
-    </BrowserRouter>
-  )
+    <AuthContext.Provider value={{ token, setToken, user, setUser }}>
+      <Routes />
+    </AuthContext.Provider>
+  );
 }
 
-export default App
+export default App;

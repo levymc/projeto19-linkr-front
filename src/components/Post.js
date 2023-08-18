@@ -5,6 +5,7 @@ import UrlPreview from './UrlPreview';
 import { BsFillPencilFill } from 'react-icons/bs';
 import { BiSolidTrashAlt } from 'react-icons/bi';
 import axios from "axios";
+import ReactModal from 'react-modal';
 import LikeButton from './LikeButton';
 
 export default function Post(props) {
@@ -16,7 +17,9 @@ export default function Post(props) {
     const [editedHashtags, setEditedHashtags] = useState(props.hashtag);
     const [onlyText, setOnlyText] = useState(props.text)
     const [editedContent, setEditedContent] = useState(`${props.text} ${props.hashtag}`);
-    
+
+    const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
+
 
     const editFieldRef = useRef();
 
@@ -28,6 +31,26 @@ export default function Post(props) {
         }
     }, [isEditing]);
 
+    const openDeleteModal = () => {
+        setDeleteModalOpen(true);
+    };
+
+    const closeDeleteModal = () => {
+        setDeleteModalOpen(false);
+    };
+
+    const handleDeleteConfirm = async () => {
+        try {
+            await axios.delete('http://localhost:5000/posts', {
+                //postId: props.userId
+            });
+        } catch (error) {
+            console.error("Erro ao excluir o post", error);
+            closeDeleteModal();
+            alert("Erro ao excluir o post");
+        }
+    };
+
     const handleEditIconClick = () => {
         if (isEditing) {
             setEditedText(editModeText);
@@ -36,6 +59,7 @@ export default function Post(props) {
         } else {
             setEditModeText(editedText);
             setEditedHashtags(editedHashtags);
+            setEditedContent(`${editedText} ${editedHashtags}`)
         }
         setIsEditing(!isEditing);
     };
@@ -73,36 +97,39 @@ export default function Post(props) {
         if (event.key === 'Enter') {
             setLoading(true);
 
-            //requisição
-            axios.put('http://localhost:5000/posts')
-            .then(response => {
-                console.log(response.data);
-            })
-            .catch(error => {
-                setEditedText(editModeText)
-                setEditedHashtags(editedHashtags);
-                setIsEditing(false);
-                alert("Erro ao atualizar o post");
-            });
-
             setEditedText(onlyText);
             setEditedHashtags(hashtagWords.join(" "));
 
             const words = editedContent.split(/\s+/);
             const hashtagWordsArray = words.filter(word => word.startsWith("#"));
             setHashtagWords(hashtagWordsArray);
-            
+
             setLoading(false);
             setIsEditing(false);
+
+            try {
+                await axios.put('http://localhost:5000/posts', {
+                    text: onlyText,
+                    hashtags: hashtagWords.join(" "),
+                    //postId: props.userId
+                });
+                console.log(onlyText, "texto atualizado");
+                console.log(hashtagWords.join(" "), "hashtags atualizadas")
+            } catch (error) {
+                setEditedText(editModeText)
+                setEditedHashtags(editedHashtags);
+                setIsEditing(false);
+                console.error("Erro ao atualizar o post", error);
+                alert("Erro ao atualizar o post");
+            }
         } else if (event.key === 'Escape') {
             setIsEditing(false);
         }
     };
 
-    console.log(editedHashtags)
-    console.log(editedText)
-    console.log(loading)
-
+    // console.log(editedHashtags)
+    // console.log(editedText)
+    // console.log(loading)
 
     return (
         <ContainerPost>
@@ -113,7 +140,7 @@ export default function Post(props) {
             <h2>{props.name}
                 <IconsEditTrash>
                     <BsFillPencilFill className="pencil" onClick={handleEditIconClick} onMouseDown={handleEditIconMouseDown} />
-                    <BiSolidTrashAlt className="trash" />
+                    <BiSolidTrashAlt className="trash" onClick={openDeleteModal} />
                 </IconsEditTrash>
             </h2>
             {isEditing ? (
@@ -124,6 +151,7 @@ export default function Post(props) {
                     onChange={handleInputChange}
                     onBlur={handleInputBlur}
                     onKeyDown={handleKeyDown}
+                    disabled={loading}
                 />
             ) : (
                 <p>
@@ -134,6 +162,22 @@ export default function Post(props) {
             <UrlPreview
                 text={"testee"}
             />
+            {isDeleteModalOpen && <BackgroundOverlay />}
+            <ReactModal
+                isOpen={isDeleteModalOpen}
+                onRequestClose={closeDeleteModal}
+                contentLabel="Confirmação de Exclusão"
+                overlayClassName="custom-overlay"
+                className="custom-content"
+            >
+                <CustomContent>
+                    <p>Are you sure you want<br/>to delete this post?</p>
+                    <div>
+                        <CustomButton cancel onClick={closeDeleteModal}>No, go back</CustomButton>
+                        <CustomButton onClick={handleDeleteConfirm}>Yes, delete it</CustomButton>
+                    </div>
+                </CustomContent>
+            </ReactModal>
         </ContainerPost>
     )
 }
@@ -176,14 +220,20 @@ const ContainerPost = styled.div`
     }
 
     textarea {
-        margin-top: 15px;
-        margin-bottom: 10px;
+        margin-top: 7px;
+        margin-bottom: 15px;
         color: #4C4C4C;
         font-family: Lato;
         font-size: 17px;
         border: none;
         border-radius: 7px;
         resize: none;
+        word-wrap: break-word; 
+        white-space: pre-wrap;
+        overflow-y: auto; 
+        min-height: 50px; 
+        max-height: 100px; 
+        height: auto;
         &:focus {
         outline: none;
         }
@@ -207,6 +257,63 @@ const LeftSection = styled.section`
 
 const IconsEditTrash = styled.div`
     .pencil {
-        margin-right: 10px;
+        margin-right: 15px;
+        cursor: pointer;
+    }
+    .trash{
+        cursor: pointer;
     }
 `
+
+const CustomContent = styled.div`
+    color: white;
+    text-align: center;
+    font-family: Lato;
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    background-color: #333;
+    border-radius: 50px;
+    width: 597px;
+    height: 262px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 11;
+`;
+
+const CustomButton = styled.button`
+    background-color: ${props => (props.cancel ? '#FFFFFF' : '#1877F2')};
+    color:  ${props => (props.cancel ? '#1877F2' : '#FFFFFF')};
+    border: none;
+    border-radius: 4px;
+    width: 134px;
+    height: 37px;
+    cursor: pointer;
+    margin: 13px;
+    font-family: Lato;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+`;
+
+const BackgroundOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.90);
+  z-index: 10; 
+`;
