@@ -8,6 +8,8 @@ import { usePostsContext } from "../components/Context";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import Header from "../components/Header/Header";
+import sleep from "../components/util/sleep";
+import { simpleModal } from "../components/modais/modais";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -17,16 +19,14 @@ export default function HomePage() {
   const config = { headers: { Authorization: `Bearer ${storedToken}` } };
   
   useEffect(() => {
-    axios.get("http://localhost:5000/posts", config)
-    .then((response) => {
-      console.log(1)
-      setPostsInfos(response.data);
-      console.log(2)
-      console.log(response.data)
-      })
-      .catch((error) => {
-        console.error("Erro ao obter os postInfo:", error);
-      });
+        axios.get("http://localhost:5000/posts", config).then((response) => {
+            setPostsInfos(response.data);
+            console.log(response.data)
+        })
+        .catch((error) => {
+            console.error("Erro ao obter os postInfo:", error);
+            simpleModal("Erro ao obter os postInfo: " + error, "error")
+        })
   }, [newPost]);
 
   // useEffect(() => {
@@ -39,7 +39,7 @@ export default function HomePage() {
     <Container>
       {/* <Header /> */}
       <Body onClick={() => console.log(postsInfos)}>
-        {postsInfos ? (
+        {postsInfos.posts  ? (
           <>
             <TitleContainer>
               <span onClick={() => console.log(postsInfos)}>timeline</span>
@@ -51,14 +51,18 @@ export default function HomePage() {
                 key = {i}
                 name = {post.name}
                 text = {post.content}
+                description = {post.descriptionMetadata}
+                title = {post.titleMetadata}
                 hashtag = {"#TESTE"}
-                img = {post.imageUrl}
+                metaImg = {post.imgMetadata}
+                userImg = {post.imageUrl}
+                postUrl = {post.postUrl}
               />
             )
                         })} 
           </>
         ) : (
-          <ReactLoading type={"spin"} color={"blue"} height={667} width={375} />
+          <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
         )}
       </Body>
     </Container>
