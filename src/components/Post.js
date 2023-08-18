@@ -136,7 +136,7 @@ export default function Post(props) {
     return (
         <ContainerPost>
             <LeftSection>
-                <PerfilImg src="https://yt3.googleusercontent.com/oZCGpPQc5qat2YIzVs_h1LTvrtpV6G--Q2CopkOoAa7d1WvHDohPzWO-vSEnQ4GljcQOO_6QkQ=s900-c-k-c0x00ffffff-no-rj" />
+                <PerfilImg src={props.userImg} />
                 <LikeButton />
             </LeftSection>
             <h2>{props.name}
@@ -157,12 +157,15 @@ export default function Post(props) {
                 />
             ) : (
                 <p>
-                    {editedText}{" "}{<b>{editedHashtags}</b>}
+                    {props.text}{" "}{<b>{editedHashtags}</b>}
                 </p>
 
             )}
             <UrlPreview
-                text={"testee"}
+                title = {props.title}
+                metaImg = {props.metaImg}
+                description = {props.description}
+                postUrl = {props.postUrl}
             />
             {isDeleteModalOpen && <BackgroundOverlay />}
             <ReactModal
@@ -204,7 +207,7 @@ const PerfilImg = styled.img`
 
 `
 const ContainerPost = styled.div`
-    height: 17em;   
+    height: 18em;   
     width: 100%;
     background-color: #171717;
     box-shadow: 1px 1px 4px 4px rgba(170, 170, 170, 0.212); 
@@ -214,8 +217,9 @@ const ContainerPost = styled.div`
     display: flex;
     flex-direction: column;
     padding: 2em;
-    padding-left: 20%;
+    padding-left: 15%;
     position:relative;
+    gap: 1em;
     h2{
         display: flex;
         justify-content: space-between;
@@ -247,9 +251,11 @@ const LeftSection = styled.section`
     left: 0;
     top: 0;
     background-color: #333333;
-    width: 15%;
-    height: 19em;
+    width: 12%;
+    height: 20em;
     padding-top: 2em;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
 
     display: flex;
     flex-direction: column;
