@@ -35,7 +35,7 @@ export default function HomePage() {
                                     key = {i}
                                     name = {"Juvenciuus"}
                                     text = {post.content}
-                                    hashtag = {"#TESTE"}
+                                    hashtag = {post.hashtags}
                                 />
                              )
                         })} 
