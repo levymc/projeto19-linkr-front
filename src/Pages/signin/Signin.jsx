@@ -30,19 +30,8 @@ export default function Signin() {
     }
     setDisabled(true);
     setLoading(true);
-    console.log("email:" + form.email + ": " + form.password);
-
-    login({ email: form.email, password: form.password })
-      .then((response) => {
-        console.log("response: " + JSON.stringify(response));
-      })
-      .catch((error) => {
-        alert(error.message);
-      })
-      .finally(() => {
-        setLoading(false);
-        setDisabled(false);
-      });
+    // console.log("email:" + form.email + ": " + form.password);
+    login({ email: form.email, password: form.password });
   }
 
   return (

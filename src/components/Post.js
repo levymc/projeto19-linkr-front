@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import UrlPreview from './UrlPreview';
 import { BsFillPencilFill } from 'react-icons/bs';
@@ -7,6 +7,8 @@ import { BiSolidTrashAlt } from 'react-icons/bi';
 import axios from "axios";
 import ReactModal from 'react-modal';
 import LikeButton from './LikeButton';
+import AuthContext from '../context/AuthContext';
+import ReactLoading from "react-loading";
 
 export default function Post(props) {
     const [loading, setLoading] = useState(false);
@@ -17,11 +19,16 @@ export default function Post(props) {
     const [editedHashtags, setEditedHashtags] = useState(props.hashtag);
     const [onlyText, setOnlyText] = useState(props.text)
     const [editedContent, setEditedContent] = useState(`${props.text} ${props.hashtag}`);
-
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-
-
     const editFieldRef = useRef();
+    let isUserPost = false;
+
+    const { user } = useContext(AuthContext);
+    const postUserId = user.id; //postUserId = props.userId
+
+    if (user.id === postUserId) {
+        isUserPost = true;
+    }
 
     useEffect(() => {
         if (isEditing) {
@@ -40,14 +47,19 @@ export default function Post(props) {
     };
 
     const handleDeleteConfirm = async () => {
+        const postId = 12 //postiId = props.postId
+        setLoading(true)
         try {
-            await axios.delete('http://localhost:5000/posts', {
-                //postId: props.userId
-            });
+            const response = await axios.delete(`${process.env.REACT_APP_API_URL}/posts/${postId}`);
+            console.log(response)
+            setLoading(false)
+            closeDeleteModal();
+            window.location.reload();
         } catch (error) {
             console.error("Erro ao excluir o post", error);
+            setLoading(false)
             closeDeleteModal();
-            alert("Erro ao excluir o post");
+            alert("Error to delete post");
         }
     };
 
@@ -104,41 +116,39 @@ export default function Post(props) {
             const hashtagWordsArray = words.filter(word => word.startsWith("#"));
             setHashtagWords(hashtagWordsArray);
 
-            setLoading(false);
             setIsEditing(false);
 
+            const hashtags = hashtagWords.join(" ")
+        
             try {
-                await axios.put('http://localhost:5000/posts', {
+                await axios.put(`${process.env.REACT_APP_API_URL}/posts`, {
                     text: onlyText,
-                    hashtags: hashtagWords.join(" "),
-                    //postId: props.userId
+                    hashtags: hashtags,
+                    postId: 1 //postId: props.postId
                 });
-                console.log(onlyText, "texto atualizado");
-                console.log(hashtagWords.join(" "), "hashtags atualizadas")
+                setLoading(false);
             } catch (error) {
                 setEditedText(editModeText)
                 setEditedHashtags(editedHashtags);
                 setIsEditing(false);
+                setLoading(false);
                 console.error("Erro ao atualizar o post", error);
-                alert("Erro ao atualizar o post");
+                alert("Error to update post");
             }
+
         } else if (event.key === 'Escape') {
             setIsEditing(false);
         }
     };
 
-    // console.log(editedHashtags)
-    // console.log(editedText)
-    // console.log(loading)
-
     return (
         <ContainerPost>
             <LeftSection>
-                <PerfilImg src="https://yt3.googleusercontent.com/oZCGpPQc5qat2YIzVs_h1LTvrtpV6G--Q2CopkOoAa7d1WvHDohPzWO-vSEnQ4GljcQOO_6QkQ=s900-c-k-c0x00ffffff-no-rj" />
+                <PerfilImg src={props.userImg} />
                 <LikeButton />
             </LeftSection>
             <h2>{props.name}
-                <IconsEditTrash>
+                <IconsEditTrash isUserPost={isUserPost}>
                     <BsFillPencilFill className="pencil" onClick={handleEditIconClick} onMouseDown={handleEditIconMouseDown} />
                     <BiSolidTrashAlt className="trash" onClick={openDeleteModal} />
                 </IconsEditTrash>
@@ -155,12 +165,15 @@ export default function Post(props) {
                 />
             ) : (
                 <p>
-                    {editedText}{" "}{<b>{editedHashtags}</b>}
+                    {props.text}{" "}{<b>{editedHashtags}</b>}
                 </p>
 
             )}
             <UrlPreview
-                text={"testee"}
+                title = {props.title}
+                metaImg = {props.metaImg}
+                description = {props.description}
+                postUrl = {props.postUrl}
             />
             {isDeleteModalOpen && <BackgroundOverlay />}
             <ReactModal
@@ -171,10 +184,20 @@ export default function Post(props) {
                 className="custom-content"
             >
                 <CustomContent>
-                    <p>Are you sure you want<br/>to delete this post?</p>
+                    <p>Are you sure you want<br />to delete this post?</p>
                     <div>
                         <CustomButton cancel onClick={closeDeleteModal}>No, go back</CustomButton>
-                        <CustomButton onClick={handleDeleteConfirm}>Yes, delete it</CustomButton>
+                        {loading ? "" : <CustomButton onClick={handleDeleteConfirm}>Yes, delete it</CustomButton>}
+                        {loading && (
+                            <ContainerLoading>
+                                <ReactLoading
+                                    type="spin"
+                                    color="#ffffff"
+                                    height={40}
+                                    width={40}
+                                />
+                            </ContainerLoading>
+                        )}
                     </div>
                 </CustomContent>
             </ReactModal>
@@ -202,7 +225,7 @@ const PerfilImg = styled.img`
 
 `
 const ContainerPost = styled.div`
-    height: 17em;   
+    height: 18em;   
     width: 100%;
     background-color: #171717;
     box-shadow: 1px 1px 4px 4px rgba(170, 170, 170, 0.212); 
@@ -212,8 +235,9 @@ const ContainerPost = styled.div`
     display: flex;
     flex-direction: column;
     padding: 2em;
-    padding-left: 20%;
+    padding-left: 15%;
     position:relative;
+    gap: 1em;
     h2{
         display: flex;
         justify-content: space-between;
@@ -245,9 +269,11 @@ const LeftSection = styled.section`
     left: 0;
     top: 0;
     background-color: #333333;
-    width: 15%;
-    height: 19em;
+    width: 12%;
+    height: 20em;
     padding-top: 2em;
+    border-bottom-left-radius: 10px;
+    border-top-left-radius: 10px;
 
     display: flex;
     flex-direction: column;
@@ -256,6 +282,7 @@ const LeftSection = styled.section`
 `
 
 const IconsEditTrash = styled.div`
+    display: ${props => (props.isUserPost ? 'flex' : 'none')};
     .pencil {
         margin-right: 15px;
         cursor: pointer;
@@ -290,6 +317,7 @@ const CustomContent = styled.div`
     right: 0;
     bottom: 0;
     z-index: 11;
+    div{display:flex}
 `;
 
 const CustomButton = styled.button`
@@ -301,6 +329,7 @@ const CustomButton = styled.button`
     height: 37px;
     cursor: pointer;
     margin: 13px;
+    margin-top: 40px;
     font-family: Lato;
     font-size: 18px;
     font-style: normal;
@@ -317,3 +346,13 @@ const BackgroundOverlay = styled.div`
   background: rgba(255, 255, 255, 0.90);
   z-index: 10; 
 `;
+
+const ContainerLoading = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 134px;
+    height: 37px;
+    margin: 13px;
+    margin-top: 38px;
+`

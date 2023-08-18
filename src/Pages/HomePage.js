@@ -8,33 +8,34 @@ import { usePostsContext } from "../components/Context";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import Header from "../components/Header/Header";
+import sleep from "../components/util/sleep";
+import { simpleModal } from "../components/modais/modais";
 
 export default function HomePage() {
   const navigate = useNavigate();
   const { postsInfos, setPostsInfos, newPost, setNewPost } = usePostsContext();
   const { user } = useContext(AuthContext);
-
+  const storedToken = localStorage.getItem("token")
+  const config = { headers: { Authorization: `Bearer ${storedToken}` } };
+  
   useEffect(() => {
-    axios.get("http://localhost:5000/posts")
-      .then((response) => {
-        setPostsInfos(response.data);
-      })
-      .catch((error) => {
-        console.error("Erro ao obter os postInfo:", error);
-      });
-  }, [newPost]);
+        axios.get("http://localhost:5000/posts", config).then((response) => {
+            setPostsInfos(response.data);
+            console.log(response.data)
+        })
+        .catch((error) => {
+            console.error("Erro ao obter os postInfo:", error);
+            simpleModal("Erro ao obter os postInfo: " + error, "error")
+        })
 
-  // useEffect(() => {
-  //   if (user === null) {
-  //     navigate("/");
-  //   }
-  // }, [user, navigate]);
+  }, [newPost]);
 
   return (
     <Container>
       {/* <Header /> */}
-      <Body onClick={() => console.log(postsInfos.posts)}>
-        {postsInfos ? (
+      <Body onClick={() => console.log(postsInfos)}>
+        {postsInfos.posts  ? (
+
           <>
             <TitleContainer>
               <span onClick={() => console.log(postsInfos)}>timeline</span>
@@ -44,15 +45,21 @@ export default function HomePage() {
                             return (
               <Post
                 key = {i}
-                name={"Juvenciuus"}
-                text={post.content}
-                hashtag={"#TESTE"}
+                name = {post.name}
+                text = {post.content}
+                description = {post.descriptionMetadata}
+                title = {post.titleMetadata}
+                hashtag = {"#TESTE"}
+                metaImg = {post.imgMetadata}
+                userImg = {post.imageUrl}
+                postUrl = {post.postUrl}
               />
             )
                         })} 
+
           </>
         ) : (
-          <ReactLoading type={"spin"} color={"blue"} height={667} width={375} />
+          <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
         )}
       </Body>
     </Container>

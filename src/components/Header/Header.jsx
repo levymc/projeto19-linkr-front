@@ -26,25 +26,23 @@ export default function Header() {
       <Menu>
         {showLogoutOption ? (
           <Icon onClick={handleIconClick}>
-            <AiOutlineUp />
+            <AiOutlineUp font-weight="700" fontSize="1.2em" />
           </Icon>
         ) : (
           <Icon onClick={handleIconClick}>
-            <AiOutlineDown />
+            <AiOutlineDown font-weight="700" fontSize="1.2em" />
           </Icon>
         )}
 
         <UserImage
           onClick={handleIconClick}
           data-test="avatar"
-          src={user.imageUrl}
+          src={user?.imageUrl || "default-image-url"}
           alt="User Image"
         />
         {showLogoutOption && (
-          <LogoutOption data-test="menu">
-            <div data-test="logout" onClick={logout}>
-              Logout
-            </div>
+          <LogoutOption onClick={logout} data-test="menu">
+            <h1>Logout</h1>
           </LogoutOption>
         )}
       </Menu>
