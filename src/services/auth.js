@@ -62,7 +62,11 @@ export function useLogin() {
       console.log("Stored Token:", storedToken);
       navigate("/timeline");
     } catch (err) {
-      alert(err.response.data.message);
+      const errorMessage =
+        err.response?.data?.message ||
+        "An error occurred. Please make sure the server is running and try again. 😊";
+      alert(errorMessage);
+      window.location.reload();
     }
   };
 }
