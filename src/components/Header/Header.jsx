@@ -37,7 +37,7 @@ export default function Header() {
         <UserImage
           onClick={handleIconClick}
           data-test="avatar"
-          src={user.imageUrl}
+          src={user?.imageUrl || "default-image-url"}
           alt="User Image"
         />
         {showLogoutOption && (

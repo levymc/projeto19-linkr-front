@@ -6,6 +6,7 @@ import Routes from "./routes/index.routes";
 function App() {
   const [token, setToken] = useState(localStorage.getItem("token"));
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
   return (
     <AuthContext.Provider value={{ token, setToken, user, setUser }}>
       <Routes />

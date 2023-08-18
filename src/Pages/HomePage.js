@@ -15,7 +15,8 @@ export default function HomePage() {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/posts")
+    axios
+      .get("http://localhost:5000/posts")
       .then((response) => {
         setPostsInfos(response.data);
       })
@@ -23,12 +24,6 @@ export default function HomePage() {
         console.error("Erro ao obter os postInfo:", error);
       });
   }, [newPost]);
-
-  // useEffect(() => {
-  //   if (user === null) {
-  //     navigate("/");
-  //   }
-  // }, [user, navigate]);
 
   return (
     <Container>
@@ -40,16 +35,17 @@ export default function HomePage() {
               <span onClick={() => console.log(postsInfos)}>timeline</span>
             </TitleContainer>
             <FormPost />
-            {postsInfos.posts && postsInfos.posts.map((post, i) => {
-                            return (
-              <Post
-                key = {i}
-                name={"Juvenciuus"}
-                text={post.content}
-                hashtag={"#TESTE"}
-              />
-            )
-                        })} 
+            {postsInfos.posts &&
+              postsInfos.posts.map((post, i) => {
+                return (
+                  <Post
+                    key={i}
+                    name={"Juvenciuus"}
+                    text={post.content}
+                    hashtag={"#TESTE"}
+                  />
+                );
+              })}
           </>
         ) : (
           <ReactLoading type={"spin"} color={"blue"} height={667} width={375} />
