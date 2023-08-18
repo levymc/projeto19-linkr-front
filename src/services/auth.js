@@ -13,10 +13,10 @@ export function useSignUp() {
         `${process.env.REACT_APP_API_URL}/sign-up`,
         body
       );
-      console.log(response.data);
+      console.log(response.data.message);
       navigate("/");
     } catch (err) {
-      alert(err.response.data);
+      alert(err.response.data.message);
     }
   };
 }
@@ -35,7 +35,7 @@ export function useLogout() {
       localStorage.clear();
       alert("logged out successfully ");
     } catch (err) {
-      alert(err.response.data);
+      alert(err.response.data.message);
     }
   };
 }
@@ -63,11 +63,11 @@ export function useLogin() {
       console.log("Stored Token:", storedToken);
       navigate("/timeline");
     } catch (err) {
-      if (err.response && err.response.data && err.response.data.message) {
-        alert(err.response.data.message);
-      } else {
-        alert("An error occurred. Please try again later.");
-      }
+      const errorMessage =
+        err.response?.data?.message ||
+        "An error occurred. Please make sure the server is running and try again. 😊";
+      alert(errorMessage);
+      window.location.reload();
     }
   };
 }

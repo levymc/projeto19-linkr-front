@@ -27,19 +27,15 @@ export default function HomePage() {
             console.error("Erro ao obter os postInfo:", error);
             simpleModal("Erro ao obter os postInfo: " + error, "error")
         })
-  }, [newPost]);
 
-  // useEffect(() => {
-  //   if (user === null) {
-  //     navigate("/");
-  //   }
-  // }, [user, navigate]);
+  }, [newPost]);
 
   return (
     <Container>
       {/* <Header /> */}
       <Body onClick={() => console.log(postsInfos)}>
         {postsInfos.posts  ? (
+
           <>
             <TitleContainer>
               <span onClick={() => console.log(postsInfos)}>timeline</span>
@@ -60,6 +56,7 @@ export default function HomePage() {
               />
             )
                         })} 
+
           </>
         ) : (
           <ReactLoading type={"spin"} color={"white"} height={667} width={375} />

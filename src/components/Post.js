@@ -6,6 +6,7 @@ import { BsFillPencilFill } from 'react-icons/bs';
 import { BiSolidTrashAlt } from 'react-icons/bi';
 import axios from "axios";
 import ReactModal from 'react-modal';
+import { simpleModal } from './modais/modais';
 import LikeButton from './LikeButton';
 
 export default function Post(props) {
@@ -40,10 +41,13 @@ export default function Post(props) {
     };
 
     const handleDeleteConfirm = async () => {
+        const postId = props.postId
         try {
-            await axios.delete('http://localhost:5000/posts', {
-                //postId: props.userId
-            });
+            const response = await axios.delete(`http://localhost:5000/posts/${postId}`);
+            console.log(response)
+            closeDeleteModal();
+            simpleModal("success")
+            window.location.reload();
         } catch (error) {
             console.error("Erro ao excluir o post", error);
             closeDeleteModal();
@@ -111,10 +115,8 @@ export default function Post(props) {
                 await axios.put('http://localhost:5000/posts', {
                     text: onlyText,
                     hashtags: hashtagWords.join(" "),
-                    //postId: props.userId
+                    postId: 1
                 });
-                console.log(onlyText, "texto atualizado");
-                console.log(hashtagWords.join(" "), "hashtags atualizadas")
             } catch (error) {
                 setEditedText(editModeText)
                 setEditedHashtags(editedHashtags);
