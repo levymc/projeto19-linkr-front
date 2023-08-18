@@ -13,11 +13,16 @@ export default function HomePage() {
   const navigate = useNavigate();
   const { postsInfos, setPostsInfos, newPost, setNewPost } = usePostsContext();
   const { user } = useContext(AuthContext);
-
+  const storedToken = localStorage.getItem("token")
+  const config = { headers: { Authorization: `Bearer ${storedToken}` } };
+  
   useEffect(() => {
-    axios.get("http://localhost:5000/posts")
-      .then((response) => {
-        setPostsInfos(response.data);
+    axios.get("http://localhost:5000/posts", config)
+    .then((response) => {
+      console.log(1)
+      setPostsInfos(response.data);
+      console.log(2)
+      console.log(response.data)
       })
       .catch((error) => {
         console.error("Erro ao obter os postInfo:", error);
@@ -33,7 +38,7 @@ export default function HomePage() {
   return (
     <Container>
       {/* <Header /> */}
-      <Body onClick={() => console.log(postsInfos.posts)}>
+      <Body onClick={() => console.log(postsInfos)}>
         {postsInfos ? (
           <>
             <TitleContainer>
@@ -44,9 +49,10 @@ export default function HomePage() {
                             return (
               <Post
                 key = {i}
-                name={"Juvenciuus"}
-                text={post.content}
-                hashtag={"#TESTE"}
+                name = {post.name}
+                text = {post.content}
+                hashtag = {"#TESTE"}
+                img = {post.imageUrl}
               />
             )
                         })} 

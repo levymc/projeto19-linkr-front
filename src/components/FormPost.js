@@ -11,16 +11,17 @@ export default function FormPost(props) {
     const [postUrl, setPostUrl] = useState('')
     const [contentValue, setContentValue] = useState('')
     const [loading, setLoading] = useState(false)
+    const storedToken = localStorage.getItem("token")
 
     const handleSubtmit = async (e) => {
         e.preventDefault()
         setLoading(true)
-
+        const config = { headers: { Authorization: `Bearer ${storedToken}` } };
         // await sleep(20)
         axios.post('http://localhost:5000/newPost', {
             postUrl: postUrl,
             content: contentValue
-        }).then(res => {
+        }, config).then(res => {
             console.log(res.data)
             setNewPost(res.data)
             simpleModal("Postagem enviada com sucesso!", "success")

@@ -134,7 +134,7 @@ export default function Post(props) {
     return (
         <ContainerPost>
             <LeftSection>
-                <PerfilImg src="https://yt3.googleusercontent.com/oZCGpPQc5qat2YIzVs_h1LTvrtpV6G--Q2CopkOoAa7d1WvHDohPzWO-vSEnQ4GljcQOO_6QkQ=s900-c-k-c0x00ffffff-no-rj" />
+                <PerfilImg src={props.img} />
                 <LikeButton />
             </LeftSection>
             <h2>{props.name}
@@ -214,6 +214,7 @@ const ContainerPost = styled.div`
     padding: 2em;
     padding-left: 20%;
     position:relative;
+    gap: 1em;
     h2{
         display: flex;
         justify-content: space-between;
