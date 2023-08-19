@@ -55,6 +55,7 @@ export const UserImage = styled.img`
   height: 3.681vw;
   border-radius: 50%;
   cursor: pointer;
+  object-fit: cover;
 
   @media screen and (max-width: 480px) {
     width: 6vh;
