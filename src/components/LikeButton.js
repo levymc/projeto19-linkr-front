@@ -6,16 +6,32 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const LikeButton = ({ userId, postId, isLiked }) => {
   const [liked, setLiked] = useState(isLiked);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
+  const [numLikes, setNumLikes] = useState(0);
 
-  const handleLike = async (userId,postId) => {
-  
+  const fetchLikesCount = async (postId) => {
     try {
-         
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/like/${postId}`,
+        { userId, postId }
+      );
+
+      const { numLikes } = response.data;
+      setNumLikes(numLikes);
+    } catch (err) {
+      console.error("Erro ao obter contagem de likes", err);
+    }
+  };
+
+  const handleLike = async (userId, postId) => {
+    try {
       setLoading(true);
-      console.log("postId")
-      await axios.post(`http://localhost:5000/like`, { userId, postId });
+      await axios.post(`${process.env.REACT_APP_API_URL}/like`, {
+        userId,
+        postId,
+      });
       setLiked(!liked);
+      fetchLikesCount(postId);
     } catch (err) {
       console.error("Erro ao curtir a postagem", err);
     } finally {
@@ -23,19 +39,14 @@ const LikeButton = ({ userId, postId, isLiked }) => {
     }
   };
 
-  // const handleLike = () => {
-  //     setLiked(!liked);
-  // }
-
   return (
     <ContainerLikes onClick={() => handleLike(3, 1)}>
       {!liked ? (
         <FavoriteBorderIcon style={{ color: "grey" }} />
-       
-      ) : (  <FavoriteIcon style={{ color: "red" }} />
-        
+      ) : (
+        <FavoriteIcon style={{ color: "red" }} />
       )}
-      <span>13 likes</span>
+      <span>{numLikes} likes</span>
     </ContainerLikes>
   );
 };
