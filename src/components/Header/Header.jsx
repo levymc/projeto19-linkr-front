@@ -10,7 +10,6 @@ import {
 import { useContext, useState } from "react";
 import { useLogout } from "../../services/auth";
 import AuthContext from "../../context/AuthContext";
-import InputSearch from "../Search";
 import SearchInput from "../SearchBar/SearchBar";
 
 export default function Header() {
@@ -25,7 +24,6 @@ export default function Header() {
   return (
     <Container>
       <Title>linkr</Title>
-      {/* <InputSearch /> */}
       <SearchInput />
       <Menu>
         {showLogoutOption ? (

@@ -101,7 +101,7 @@ export const OutlineIcon = styled.span`
   margin: 3%;
   ion-icon {
     font-size: 1.5em;
-    color: gray;
+    color: #c6c6c6;
   }
 `;
 

@@ -26,9 +26,6 @@ code {
     monospace;
 }
 
-span{
-  color: var(--white-color)
-}
 
 `;
 
