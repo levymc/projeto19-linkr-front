@@ -32,6 +32,7 @@ export default function FormPost(props) {
             simpleModal("Houve um erro ao publicar seu link", "error")
         }).finally(() => {
             setLoading(false)
+            window.location.reload();
         })
     }
 
