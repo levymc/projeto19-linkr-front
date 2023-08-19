@@ -9,6 +9,7 @@ import ReactModal from 'react-modal';
 import LikeButton from './LikeButton';
 import AuthContext from '../context/AuthContext';
 import ReactLoading from "react-loading";
+import { useNavigate } from 'react-router-dom';
 
 export default function Post(props) {
     const [loading, setLoading] = useState(false);
@@ -22,7 +23,7 @@ export default function Post(props) {
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const editFieldRef = useRef();
     let isUserPost = false;
-
+    const navigate = useNavigate()
     const { user } = useContext(AuthContext);
     const postUserId = props.userId
 
@@ -147,12 +148,18 @@ export default function Post(props) {
                 <PerfilImg src={props.userImg} />
                 <LikeButton />
             </LeftSection>
-            <h2>{props.name}
+            <div>
+                <h2 onClick={() => navigate(`/user/${postUserId}`)}>{props.name}</h2>
                 <IconsEditTrash isUserPost={isUserPost}>
-                    <BsFillPencilFill className="pencil" onClick={handleEditIconClick} onMouseDown={handleEditIconMouseDown} />
-                    <BiSolidTrashAlt className="trash" onClick={openDeleteModal} />
+                    {isUserPost && (
+                        <>
+                            <BsFillPencilFill className="pencil" onClick={handleEditIconClick} onMouseDown={handleEditIconMouseDown} />
+                            <BiSolidTrashAlt className="trash" onClick={openDeleteModal} />
+                        </>
+                    )}
                 </IconsEditTrash>
-            </h2>
+            </div>
+
             {isEditing ? (
                 <textarea
                     ref={editFieldRef}
@@ -238,9 +245,12 @@ const ContainerPost = styled.div`
     padding-left: 15%;
     position:relative;
     gap: 1em;
-    h2{
+    div{
         display: flex;
         justify-content: space-between;
+        h2{
+            cursor: pointer;
+        }
     }
 
     textarea {
