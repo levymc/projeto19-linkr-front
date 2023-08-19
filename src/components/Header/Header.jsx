@@ -25,7 +25,7 @@ export default function Header() {
     <Container>
       <Title>linkr</Title>
       <SearchInput />
-      <Menu>
+      <Menu data-test="menu">
         <Icon onClick={handleIconClick}>
           {showMenu ? (
             <AiOutlineUp fontWeight="700" fontSize="1.2em" />
