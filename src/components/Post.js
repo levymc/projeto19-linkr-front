@@ -225,13 +225,13 @@ const PerfilImg = styled.img`
 
 `
 const ContainerPost = styled.div`
-    height: 18em;   
+    height: 100%;   
     width: 100%;
     background-color: #171717;
     box-shadow: 1px 1px 4px 4px rgba(170, 170, 170, 0.212); 
     border-radius: 10px;
     color: white;
-
+    align-items: stretch;
     display: flex;
     flex-direction: column;
     padding: 2em;
@@ -269,12 +269,11 @@ const LeftSection = styled.section`
     left: 0;
     top: 0;
     background-color: #333333;
+    height: calc(100% - 32px);
     width: 12%;
-    height: 20em;
     padding-top: 2em;
     border-bottom-left-radius: 10px;
     border-top-left-radius: 10px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
