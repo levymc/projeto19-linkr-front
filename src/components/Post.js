@@ -14,13 +14,12 @@ import { Link } from 'react-router-dom';
 
 
 export default function Post(props) {
-    const [textoOriginal, setTextoOriginal] = useState(props.text)
-    console.log(textoOriginal, "texto original")
+    const [originalText, setOriginalText] = useState(props.text)
+    console.log(originalText, "texto original")
 
     const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedText, setEditedText] = useState(props.text);
-    const [editModeText, setEditModeText] = useState(editedText);
     const [hashtagWords, setHashtagWords] = useState([]);
     const [editedHashtags, setEditedHashtags] = useState(()=>{
         if(props.hashtag) return props.hashtag;
@@ -75,11 +74,11 @@ export default function Post(props) {
 
     const handleEditIconClick = () => {
         if (isEditing) {
-            setTextoOriginal(editedText);
+            setOriginalText(editedText);
             setIsEditing(false);
             setEditedContent(`${editedText} ${editedHashtags}`);
         } else {
-            setTextoOriginal(editedText);
+            setOriginalText(editedText);
             setEditedHashtags(editedHashtags);
             setEditedContent(`${editedText} ${editedHashtags}`)
         }
@@ -96,7 +95,7 @@ export default function Post(props) {
         }
         const words = inputValue.split(/\s+/);
         console.log(words, "words")
-        setTextoOriginal(words.join(" "))
+        setOriginalText(words.join(" "))
         const hashtagWordsArray = words.filter(word => word.startsWith("#"));
         setHashtagWords(hashtagWordsArray);
 
@@ -120,7 +119,7 @@ export default function Post(props) {
         if (event.key === 'Enter') {
             setLoading(true);
 
-            setEditedText(textoOriginal);
+            setEditedText(originalText);
             setEditedHashtags(hashtagWords.join(" "));
 
             const words = editedContent.split(/\s+/);
@@ -133,13 +132,13 @@ export default function Post(props) {
         
             try {
                 await axios.put(`${process.env.REACT_APP_API_URL}/posts`, {
-                    text: textoOriginal,
+                    text: originalText,
                     hashtags: hashtags,
                     postId: props.postId
                 });
                 setLoading(false);
             } catch (error) {
-                setEditedText(editModeText)
+                setOriginalText(editedText)
                 setEditedHashtags(editedHashtags);
                 setIsEditing(false);
                 setLoading(false);
@@ -149,7 +148,7 @@ export default function Post(props) {
 
         } else if (event.key === 'Escape') {
             setIsEditing(false);
-            setTextoOriginal(editedText);
+            setOriginalText(editedText);
         }
     };
 
@@ -179,7 +178,7 @@ export default function Post(props) {
                 <textarea
                     ref={editFieldRef}
                     type="text"
-                    value={textoOriginal}
+                    value={originalText}
                     onChange={handleInputChange}
                     onBlur={handleInputBlur}
                     onKeyDown={handleKeyDown}
@@ -187,7 +186,7 @@ export default function Post(props) {
                 />
             ) : (
                 <p>
-                    {textoOriginal.split(/\s+/).map((word, index) => {
+                    {originalText.split(/\s+/).map((word, index) => {
                         if (word.startsWith('#')) {
                         const hashtag = word.substring(1);
                         return (
