@@ -17,24 +17,24 @@ export default function HomePage() {
   const { user } = useContext(AuthContext);
   const storedToken = localStorage.getItem("token")
   const config = { headers: { Authorization: `Bearer ${storedToken}` } };
-  
+
   useEffect(() => {
-        axios.get("http://localhost:5000/posts", config).then((response) => {
-            setPostsInfos(response.data);
-            console.log(response.data)
-        })
-        .catch((error) => {
-            console.error("Erro ao obter os postInfo:", error);
-            simpleModal("Erro ao obter os postInfo: " + error, "error")
-        })
+    axios.get("http://localhost:5000/posts", config).then((response) => {
+      setPostsInfos(response.data);
+      console.log(response.data)
+    })
+      .catch((error) => {
+        console.error("Erro ao obter os postInfo:", error);
+        simpleModal("Erro ao obter os postInfo: " + error, "error")
+      })
 
   }, [newPost]);
 
   return (
     <Container>
-      {/* <Header /> */}
+      <Header />
       <Body onClick={() => console.log(postsInfos)}>
-        {postsInfos.posts  ? (
+        {postsInfos.posts ? (
 
           <>
             <TitleContainer>
@@ -42,20 +42,22 @@ export default function HomePage() {
             </TitleContainer>
             <FormPost />
             {postsInfos.posts && postsInfos.posts.map((post, i) => {
-                            return (
-              <Post
-                key = {i}
-                name = {post.name}
-                text = {post.content}
-                description = {post.descriptionMetadata}
-                title = {post.titleMetadata}
-                hashtag = {"#TESTE"}
-                metaImg = {post.imgMetadata}
-                userImg = {post.imageUrl}
-                postUrl = {post.postUrl}
-              />
-            )
-                        })} 
+              return (
+                <Post
+                  key={i}
+                  name={post.name}
+                  text={post.content}
+                  description={post.descriptionMetadata}
+                  title={post.titleMetadata}
+                  hashtag={post.hashtags}
+                  metaImg={post.imgMetadata}
+                  userImg={post.imageUrl}
+                  postUrl={post.postUrl}
+                  postId={post.postId}
+                  userId={post.userId}
+                />
+              )
+            })}
 
           </>
         ) : (
@@ -78,7 +80,7 @@ const TitleContainer = styled.div`
 `;
 
 const Container = styled.div`
-  padding-top: 10em;
+  padding-top: 6em;
   display: flex;
   justify-content: center;
   align-items: center;
