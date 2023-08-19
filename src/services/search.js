@@ -6,6 +6,7 @@ export function useSearchUser() {
   const { token } = useContext(AuthContext);
 
   const [searchResults, setSearchResults] = useState([]);
+  const [notFoundError, setNotFoundError] = useState(false);
 
   const fetchSearchResults = async (username) => {
     try {
@@ -18,11 +19,27 @@ export function useSearchUser() {
         }
       );
       setSearchResults(response.data.users);
+      setNotFoundError(false);
     } catch (err) {
-      console.error(err);
-      alert("Error fetching user data");
+      if (err.response && err.response.status === 404) {
+        setSearchResults([]);
+        setNotFoundError(true);
+      } else {
+        console.error(err);
+        alert("Error fetching user data");
+      }
     }
   };
 
-  return { searchResults, fetchSearchResults };
+  const clearSearchResults = () => {
+    setSearchResults([]);
+    setNotFoundError(false);
+  };
+
+  return {
+    searchResults,
+    notFoundError,
+    fetchSearchResults,
+    clearSearchResults,
+  };
 }

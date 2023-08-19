@@ -1,7 +1,5 @@
 import React from "react";
-import { useState } from "react";
 import { DebounceInput } from "react-debounce-input";
-import styled from "styled-components";
 import { useSearchUser } from "../../services/search";
 import { AiOutlineSearch } from "react-icons/ai";
 
@@ -16,12 +14,19 @@ import {
 } from "./styled";
 
 export default function SearchInput({ avatar }) {
-  const { searchResults, fetchSearchResults } = useSearchUser();
+  const {
+    searchResults,
+    fetchSearchResults,
+    clearSearchResults,
+    notFoundError,
+  } = useSearchUser();
 
   const handleInputChange = (event) => {
     const inputValue = event.target.value;
     if (inputValue.length >= 3) {
       fetchSearchResults(inputValue);
+    } else {
+      clearSearchResults();
     }
   };
 
@@ -32,7 +37,7 @@ export default function SearchInput({ avatar }) {
       <InputBox>
         <DebounceInput
           data-test="search"
-          element={DebouncedInput} // Use the styled DebouncedInput here
+          element={DebouncedInput}
           type="text"
           placeholder="Search for people"
           debounceTimeout={300}
@@ -56,6 +61,13 @@ export default function SearchInput({ avatar }) {
               <h1>{user.name} </h1>
             </UserBox>
           ))}
+        </SearchContainer>
+      )}
+      {notFoundError && (
+        <SearchContainer id="search-container">
+          <UserBox>
+            <h1>No user found.</h1>
+          </UserBox>
         </SearchContainer>
       )}
     </Container>
