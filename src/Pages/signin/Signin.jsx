@@ -28,9 +28,9 @@ export default function Signin() {
       alert("Please fill in both email and password fields.");
       return;
     }
+
     setDisabled(true);
     setLoading(true);
-    // console.log("email:" + form.email + ": " + form.password);
     login({ email: form.email, password: form.password });
   }
 
