@@ -10,14 +10,22 @@ import LikeButton from './LikeButton';
 import AuthContext from '../context/AuthContext';
 import ReactLoading from "react-loading";
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 
 export default function Post(props) {
+    const [textoOriginal, setTextoOriginal] = useState(props.text)
+    console.log(textoOriginal, "texto original")
+
     const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedText, setEditedText] = useState(props.text);
     const [editModeText, setEditModeText] = useState(editedText);
     const [hashtagWords, setHashtagWords] = useState([]);
-    const [editedHashtags, setEditedHashtags] = useState(props.hashtag);
+    const [editedHashtags, setEditedHashtags] = useState(()=>{
+        if(props.hashtag) return props.hashtag;
+        else return "";
+    });
     const [onlyText, setOnlyText] = useState(props.text)
     const [editedContent, setEditedContent] = useState(`${props.text} ${props.hashtag}`);
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -26,6 +34,7 @@ export default function Post(props) {
     const navigate = useNavigate()
     const { user } = useContext(AuthContext);
     const postUserId = props.userId
+    console.log(editedHashtags, "hashtags")
 
     if (user.id === postUserId) {
         isUserPost = true;
@@ -66,11 +75,11 @@ export default function Post(props) {
 
     const handleEditIconClick = () => {
         if (isEditing) {
-            setEditedText(editModeText);
+            setTextoOriginal(editedText);
             setIsEditing(false);
             setEditedContent(`${editedText} ${editedHashtags}`);
         } else {
-            setEditModeText(editedText);
+            setTextoOriginal(editedText);
             setEditedHashtags(editedHashtags);
             setEditedContent(`${editedText} ${editedHashtags}`)
         }
@@ -85,8 +94,9 @@ export default function Post(props) {
         } else {
             setEditedText(inputValue);
         }
-
         const words = inputValue.split(/\s+/);
+        console.log(words, "words")
+        setTextoOriginal(words.join(" "))
         const hashtagWordsArray = words.filter(word => word.startsWith("#"));
         setHashtagWords(hashtagWordsArray);
 
@@ -110,7 +120,7 @@ export default function Post(props) {
         if (event.key === 'Enter') {
             setLoading(true);
 
-            setEditedText(onlyText);
+            setEditedText(textoOriginal);
             setEditedHashtags(hashtagWords.join(" "));
 
             const words = editedContent.split(/\s+/);
@@ -123,7 +133,7 @@ export default function Post(props) {
         
             try {
                 await axios.put(`${process.env.REACT_APP_API_URL}/posts`, {
-                    text: onlyText,
+                    text: textoOriginal,
                     hashtags: hashtags,
                     postId: props.postId
                 });
@@ -139,8 +149,13 @@ export default function Post(props) {
 
         } else if (event.key === 'Escape') {
             setIsEditing(false);
+            setTextoOriginal(editedText);
         }
     };
+
+    const handleHashtagClick = (hashtag) => {
+        navigate(`/hashtag/${hashtag}`);
+      };
 
     return (
         <ContainerPost>
@@ -164,7 +179,7 @@ export default function Post(props) {
                 <textarea
                     ref={editFieldRef}
                     type="text"
-                    value={editedContent}
+                    value={textoOriginal}
                     onChange={handleInputChange}
                     onBlur={handleInputBlur}
                     onKeyDown={handleKeyDown}
@@ -172,8 +187,28 @@ export default function Post(props) {
                 />
             ) : (
                 <p>
-                    {editedText}{" "}{<b>{editedHashtags}</b>}
+                    {textoOriginal.split(/\s+/).map((word, index) => {
+                        if (word.startsWith('#')) {
+                        const hashtag = word.substring(1);
+                        return (
+                            <Link
+                            to={`/hashtag/${hashtag}`} 
+                            key={index}
+                            onClick={() => handleHashtagClick(hashtag)}
+                            style={{
+                                textDecoration: 'none', 
+                                color: 'inherit', 
+                                fontWeight: 'bold', 
+                            }}
+                            >
+                            {word}{' '}
+                            </Link>
+                        );
+                        }
+                        return `${word} `;
+                    })}
                 </p>
+
 
             )}
             <UrlPreview
