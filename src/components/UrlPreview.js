@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 export default function UrlPreview(props) {
 
     function truncateDescription(description, maxLength) {
-        if (description.length > maxLength) {
+        if (description && description.length > maxLength) {
             return description.slice(0, maxLength) + '...';
         }
         return description;

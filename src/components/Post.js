@@ -24,7 +24,7 @@ export default function Post(props) {
     let isUserPost = false;
 
     const { user } = useContext(AuthContext);
-    const postUserId = user.id; //postUserId = props.userId
+    const postUserId = props.userId
 
     if (user.id === postUserId) {
         isUserPost = true;
@@ -47,7 +47,7 @@ export default function Post(props) {
     };
 
     const handleDeleteConfirm = async () => {
-        const postId = 12 //postiId = props.postId
+        const postId = props.postId
         setLoading(true)
         try {
             const response = await axios.delete(`${process.env.REACT_APP_API_URL}/posts/${postId}`);
@@ -124,7 +124,7 @@ export default function Post(props) {
                 await axios.put(`${process.env.REACT_APP_API_URL}/posts`, {
                     text: onlyText,
                     hashtags: hashtags,
-                    postId: 1 //postId: props.postId
+                    postId: props.postId
                 });
                 setLoading(false);
             } catch (error) {
@@ -165,7 +165,7 @@ export default function Post(props) {
                 />
             ) : (
                 <p>
-                    {props.text}{" "}{<b>{editedHashtags}</b>}
+                    {editedText}{" "}{<b>{editedHashtags}</b>}
                 </p>
 
             )}
