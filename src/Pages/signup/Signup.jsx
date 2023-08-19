@@ -3,8 +3,16 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import useForm from "../../hooks/useForm";
 import { useSignUp } from "../../services/auth";
+import ReactLoading from "react-loading";
 
-import { Main, SignupContainer, SignUpForm } from "./SignupStyles";
+import {
+  Main,
+  SignupContainer,
+  SignUpForm,
+  ButtonContainer,
+  LoadingContainer,
+} from "./SignupStyles";
+
 export default function Signup() {
   const signUp = useSignUp();
   const { form, handleForm } = useForm({
@@ -15,10 +23,12 @@ export default function Signup() {
   });
 
   const [disabled, setDisabled] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   function createRegister(e) {
     e.preventDefault();
     setDisabled(true);
+    setLoading(true);
     signUp(form);
   }
 
@@ -65,14 +75,21 @@ export default function Signup() {
             onChange={handleForm}
             disabled={disabled}
           />
-          <button
-            data-test="sign-up-btn"
-            type="submit"
-            disabled={disabled}
-            onClick={() => setDisabled(false)}
-          >
-            Sign Up
-          </button>
+          <ButtonContainer>
+            <button data-test="sign-up-btn" type="submit" disabled={disabled}>
+              {loading && (
+                <LoadingContainer>
+                  <ReactLoading
+                    type="spin"
+                    color="#ffffff"
+                    height={40}
+                    width={40}
+                  />
+                </LoadingContainer>
+              )}
+              {loading ? "" : "Sign Up"}
+            </button>
+          </ButtonContainer>
           <Link data-test="login-link" to={"/"}>
             Switch back to log in
           </Link>
