@@ -109,5 +109,5 @@ export const ButtonContainer = styled.div`
 
 export const LoadingContainer = styled.div`
   display: inline-block;
-  margin-right: 10px; /* Add some spacing between spinner and text */
+  margin-right: 10px;
 `;

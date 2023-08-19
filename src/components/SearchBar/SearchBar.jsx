@@ -12,7 +12,7 @@ import {
   DebouncedInput,
 } from "./styled";
 
-export default function SearchInput({ avatar }) {
+export default function SearchInput() {
   const {
     searchResults,
     fetchSearchResults,

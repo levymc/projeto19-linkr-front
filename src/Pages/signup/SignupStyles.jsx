@@ -58,17 +58,23 @@ export const SignUpForm = styled.form`
     width: 430px;
     height: 70px;
     border-radius: 6px;
+    border: 1px solid var(--blue-color);
+    background-color: var(--blue-color);
     font-family: var(--tertiary-font);
-    font-style: normal;
     font-weight: 700;
     font-size: 27px;
     line-height: 40px;
     cursor: pointer;
-    color: var(--white-color);
-    border: 1px solid var(--blue-color);
-    background-color: var(--blue-color);
+    color: #ffffff;
+
     @media (max-width: 768px) {
       width: 91%;
+    }
+
+    &:disabled {
+      opacity: 0.1;
+      cursor: auto;
+      pointer-events: none;
     }
   }
   a {
@@ -87,4 +93,15 @@ export const SignUpForm = styled.form`
     width: 100%;
     padding: 10px;
   }
+`;
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const LoadingContainer = styled.div`
+  display: inline-block;
+  margin-right: 10px;
 `;
