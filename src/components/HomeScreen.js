@@ -34,8 +34,8 @@ const MainContent = styled.main`
     font-style: normal;
     font-weight: 700;
     font-size: 106px;
-
     letter-spacing: 0.05em;
+    color: var(--white-color); /* Set the color to white */
     @media (max-width: 768px) {
       font-size: 76px;
     }
@@ -46,7 +46,6 @@ const MainContent = styled.main`
     font-weight: 700;
     font-size: 43px;
     margin-top: 20px;
-
     color: var(--white-color);
     @media (max-width: 768px) {
       font-size: 23px;
