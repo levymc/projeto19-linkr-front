@@ -33,7 +33,7 @@ export default function HomePage() {
   return (
     <Container>
       <Header />
-      <Body onClick={() => console.log(postsInfos)}>
+      <Body>
         {postsInfos.posts ? (
 
           <>
@@ -70,7 +70,7 @@ export default function HomePage() {
 
 const TitleContainer = styled.div`
   color: #fff;
-  font-family: Ubuntu, sans-serif;
+  font-family: "Lato", sans-serif;
   font-size: 43px;
   font-weight: 700;
   display: flex;

@@ -1,0 +1,102 @@
+import styled from "styled-components";
+import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import Post from "../components/Post";
+import ReactLoading from "react-loading";
+import { useNavigate, useParams } from "react-router-dom";
+import Header from "../components/Header/Header";
+import sleep from "../components/util/sleep";
+import { simpleModal } from "../components/modais/modais";
+
+export default function UserMe() {
+    const [userPosts, setUserPosts] = useState([])
+    const storedToken = localStorage.getItem("token")
+    const config = { headers: { Authorization: `Bearer ${storedToken}` } }
+    const { id } = useParams()
+
+    useEffect(() => {
+        if (id) {
+            const url = `http://localhost:5000/userPosts/${id}`
+
+            axios.get(url, config).then((response) => {
+                setUserPosts(response.data)
+                console.log(response.data)
+            })
+                .catch((error) => {
+                    console.error("Erro ao obter os postInfo:", error)
+                    simpleModal("Erro ao obter os postInfo: " + error, "error")
+                })
+        }
+    }, [id])
+
+    return (
+        <Container>
+            <Header />
+            <Body onClick={() => console.log(id)}>
+                {userPosts ? (
+
+                    <>
+                        <TitleContainer>
+                            <span>{userPosts.user ? userPosts.user.name : "Carregando..."}'s posts</span>
+                        </TitleContainer>
+                        {userPosts.posts && userPosts.posts.map((post, i) => {
+                            return (
+                                <Post
+                                    key={i}
+                                    name={post.name}
+                                    text={post.content}
+                                    description={post.descriptionMetadata}
+                                    title={post.titleMetadata}
+                                    hashtag={post.hashtags}
+                                    metaImg={post.imgMetadata}
+                                    userImg={post.imageUrl}
+                                    postUrl={post.postUrl}
+                                    postId={post.postId}
+                                    userId={post.userId}
+                                />
+                            )
+                        })}
+
+                    </>
+                ) : (
+                    <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
+                )}
+            </Body>
+        </Container>
+    );
+}
+
+const TitleContainer = styled.div`
+  color: #fff;
+  font-family: "Lato", sans-serif;
+  font-size: 43px;
+  font-weight: 700;
+  display: flex;
+  width: 100%;
+  align-items: start;
+  padding-bottom: 0.6em;
+`;
+
+const Container = styled.div`
+  padding-top: 6em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  width: 100%;
+  min-height: 100vh;
+  height: auto;
+  background-color: #333333;
+  overflow-y: hidden;
+`;
+
+const Body = styled.div`
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 2em;
+
+  padding: 2em;
+  width: 50%;
+  height: 60%;
+`;
