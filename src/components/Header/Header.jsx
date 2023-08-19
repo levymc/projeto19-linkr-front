@@ -44,7 +44,7 @@ export default function Header() {
         />
         {showLogoutOption && (
           <LogoutOption onClick={logout} data-test="menu">
-            <h1>Logout</h1>
+            <h1 data-test="menu">Logout</h1>
           </LogoutOption>
         )}
       </Menu>

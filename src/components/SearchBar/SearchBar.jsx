@@ -3,7 +3,6 @@ import { DebounceInput } from "react-debounce-input";
 import { useSearchUser } from "../../services/search";
 import { AiOutlineSearch } from "react-icons/ai";
 
-// Import your styled components from styled.jsx
 import {
   Container,
   InputBox,
@@ -58,7 +57,7 @@ export default function SearchInput({ avatar }) {
               key={user.userId}
             >
               <img src={user.imageUrl} alt="" />
-              <h1>{user.name} </h1>
+              <h1>{user.name}</h1>
             </UserBox>
           ))}
         </SearchContainer>
