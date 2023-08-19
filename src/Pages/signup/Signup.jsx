@@ -27,6 +27,12 @@ export default function Signup() {
 
   function createRegister(e) {
     e.preventDefault();
+
+    if (!form.email || !form.password || !form.name || !form.imageUrl) {
+      alert("Please fill in all required fields.");
+      return;
+    }
+
     setDisabled(true);
     setLoading(true);
     signUp(form);

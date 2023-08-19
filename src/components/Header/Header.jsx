@@ -14,27 +14,25 @@ import SearchInput from "../SearchBar/SearchBar";
 
 export default function Header() {
   const { user } = useContext(AuthContext);
-  const [showLogoutOption, setShowLogoutOption] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const logout = useLogout();
 
   const handleIconClick = () => {
-    setShowLogoutOption(!showLogoutOption);
+    setShowMenu(!showMenu);
   };
 
   return (
     <Container>
       <Title>linkr</Title>
       <SearchInput />
-      <Menu>
-        {showLogoutOption ? (
-          <Icon onClick={handleIconClick}>
-            <AiOutlineUp font-weight="700" fontSize="1.2em" />
-          </Icon>
-        ) : (
-          <Icon onClick={handleIconClick}>
-            <AiOutlineDown font-weight="700" fontSize="1.2em" />
-          </Icon>
-        )}
+      <Menu data-test="menu">
+        <Icon onClick={handleIconClick}>
+          {showMenu ? (
+            <AiOutlineUp fontWeight="700" fontSize="1.2em" />
+          ) : (
+            <AiOutlineDown fontWeight="700" fontSize="1.2em" />
+          )}
+        </Icon>
 
         <UserImage
           onClick={handleIconClick}
@@ -42,9 +40,9 @@ export default function Header() {
           src={user?.imageUrl || "default-image-url"}
           alt="User Image"
         />
-        {showLogoutOption && (
+        {showMenu && (
           <LogoutOption onClick={logout} data-test="menu">
-            <h1 data-test="menu">Logout</h1>
+            <h1>Logout</h1>
           </LogoutOption>
         )}
       </Menu>
