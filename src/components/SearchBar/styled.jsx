@@ -106,7 +106,6 @@ export const OutlineIcon = styled.span`
 `;
 
 export const DebouncedInput = styled.input`
-  /* Apply the desired styles here */
   width: 100%;
   height: 80%;
   margin: 2%;

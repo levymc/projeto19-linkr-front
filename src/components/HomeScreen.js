@@ -35,7 +35,7 @@ const MainContent = styled.main`
     font-weight: 700;
     font-size: 106px;
     letter-spacing: 0.05em;
-    color: var(--white-color); /* Set the color to white */
+    color: var(--white-color);
     @media (max-width: 768px) {
       font-size: 76px;
     }
