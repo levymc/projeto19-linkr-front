@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+  position: relative;
   background: rgb(255, 255, 255);
   width: 32%;
   min-height: 45px;
@@ -10,6 +11,8 @@ export const Container = styled.div`
   align-items: center;
   border-radius: 10px;
   margin-left: 168px;
+  z-index: 2;
+
   @media (max-width: 650px) {
     position: absolute;
     left: 50%;
@@ -34,8 +37,6 @@ export const InputBox = styled.div`
   display: flex;
   align-items: center;
   border-radius: 5px;
-  background: #ffffff;
-  z-index: 2;
 `;
 
 export const SearchContainer = styled.div`
@@ -43,23 +44,24 @@ export const SearchContainer = styled.div`
   max-height: 310px;
   align-items: center;
   background: #e7e7e7;
-  border-radius: 0 0 8px 8px;
+  border-radius: 8px;
   overflow-y: scroll;
-  position: fixed;
-  top: 64px;
-  z-index: 0;
+  position: absolute;
+  top: 93%;
+  left: 0;
+  width: 100%;
+
   h1 {
     cursor: pointer;
   }
   @media (max-width: 650px) {
-    z-index: 0;
     top: 42px;
     width: 100%;
     max-height: 125px;
   }
   @media (max-width: 480px) {
     max-height: 82px;
-    z-index: 0;
+
     left: 50.04%;
     top: 82px;
     width: 100%;
@@ -88,8 +90,8 @@ export const UserBox = styled.a`
   img {
     border-radius: 50%;
     object-fit: cover;
-    width: 60px;
-    height: 60px;
+    width: 39px;
+    height: 39px;
     margin-right: 15px;
   }
   span {
@@ -98,7 +100,8 @@ export const UserBox = styled.a`
 `;
 
 export const OutlineIcon = styled.span`
-  margin: 3%;
+  margin: 15px;
+  color: gray;
   ion-icon {
     font-size: 1.5em;
     color: #c6c6c6;
