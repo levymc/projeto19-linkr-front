@@ -10,7 +10,7 @@ import LikeButton from './LikeButton';
 import AuthContext from '../context/AuthContext';
 import ReactLoading from "react-loading";
 import { useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import HashtagParser from './HashtagParser/HashtagParser';
 
 
 export default function Post(props) {
@@ -185,28 +185,7 @@ export default function Post(props) {
                     disabled={loading}
                 />
             ) : (
-                <p>
-                    {originalText.split(/\s+/).map((word, index) => {
-                        if (word.startsWith('#')) {
-                        const hashtag = word.substring(1);
-                        return (
-                            <Link
-                            to={`/hashtag/${hashtag}`} 
-                            key={index}
-                            onClick={() => handleHashtagClick(hashtag)}
-                            style={{
-                                textDecoration: 'none', 
-                                color: 'inherit', 
-                                fontWeight: 'bold', 
-                            }}
-                            >
-                            {word}{' '}
-                            </Link>
-                        );
-                        }
-                        return `${word} `;
-                    })}
-                </p>
+                <HashtagParser content={originalText} />
 
 
             )}
