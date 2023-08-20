@@ -3,6 +3,7 @@ import HomePage from "../Pages/HomePage";
 import Signin from "../Pages/signin/Signin";
 import Signup from "../Pages/signup/Signup";
 import UserMe from "../Pages/UserMe";
+import HashtagPage from "../Pages/HashtagPage";
 
 const Routes = () => {
   return useRoutes([
@@ -10,6 +11,7 @@ const Routes = () => {
     { path: "/sign-up", element: <Signup /> },
     { path: "/timeline", element: <HomePage /> },
     { path: "/user/:id", element: <UserMe /> },
+    { path: "/hashtag/:hashtag", element: <HashtagPage /> },
   ]);
 };
 export default Routes;
