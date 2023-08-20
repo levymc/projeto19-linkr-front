@@ -41,7 +41,7 @@ export default function Header() {
           alt="User Image"
         />
         {showMenu && (
-          <LogoutOption onClick={logout} data-test="menu">
+          <LogoutOption onClick={logout} data-test="logout">
             <h1>Logout</h1>
           </LogoutOption>
         )}
