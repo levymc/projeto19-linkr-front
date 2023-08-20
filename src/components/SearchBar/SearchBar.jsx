@@ -44,7 +44,6 @@ export default function SearchInput() {
           required
         />
         <OutlineIcon>
-          {" "}
           <AiOutlineSearch name="search-outline" />
         </OutlineIcon>
       </InputBox>
