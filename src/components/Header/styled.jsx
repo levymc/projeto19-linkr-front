@@ -51,12 +51,11 @@ export const Icon = styled.div`
 `;
 
 export const UserImage = styled.img`
-  width: 3.681vw;
-  height: 3.681vw;
+  width: 53px;
+  height: 53px;
   border-radius: 50%;
   cursor: pointer;
   object-fit: cover;
-
   @media screen and (max-width: 480px) {
     width: 6vh;
     height: 6vh;
@@ -70,7 +69,7 @@ export const LogoutOption = styled.div`
   position: absolute;
   top: 100%;
   right: 0;
-  margin-bottom: 5px; /* Adjust this value if needed */
+  margin-bottom: 5px;
   background-color: #151515;
   border-radius: 0 0 0 20px;
   transition: background-color 0.3s, color 0.3s;
