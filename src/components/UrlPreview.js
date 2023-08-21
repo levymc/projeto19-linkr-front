@@ -13,8 +13,8 @@ export default function UrlPreview(props) {
     }
 
     return (
-            <Link target="_blank" rel="noopener noreferrer" href={props.postUrl} style={{ textDecoration: 'none', textDecorationColor: "inherit" }}>
-                <SCUrlPreview data-test="link">
+            <Link data-test="link" target="_blank" rel="noopener noreferrer" href={props.postUrl} style={{ textDecoration: 'none', textDecorationColor: "inherit" }}>
+                <SCUrlPreview>
                     <Helmet>
                         <meta property="og:image:type" content="image/jpeg" />
                         <meta property="og:image:width" content="300" />
