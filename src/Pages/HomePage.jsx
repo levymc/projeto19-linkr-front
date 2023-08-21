@@ -39,7 +39,7 @@ export default function HomePage() {
         <BodyContent>
           <BodyContentLeft>
             <TitleContainer>
-              <span onClick={() => console.log(postsInfos)}>timeline</span>
+              <span>timeline</span>
             </TitleContainer>
             <FormPost />
             {postsInfos.posts.length > 0 ?
@@ -59,7 +59,7 @@ export default function HomePage() {
                     userId={post.userId}
                   />
                 );
-              }) : <span>There are no posts yet</span> }
+              }) : <span data-test="message">There are no posts yet</span> }
           </BodyContentLeft>
           <div className="trending-div">
             <Trending />
