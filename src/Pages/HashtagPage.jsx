@@ -35,7 +35,7 @@ export default function HashtagPage() {
                 <BodyContent>
                     <BodyContentLeft>
                         <TitleContainer>
-                            <span onClick={() => console.log(postsInfos)}># {hashtag}</span>
+                            <h2 data-test="hashtag-title"># {hashtag}</h2>
                         </TitleContainer>
                         {postsInfos.posts && postsInfos.posts.map((post, i) => {
                             return (

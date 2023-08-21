@@ -14,11 +14,13 @@ export default function Trending() {
     }, [])
 
     return (
-        <TrendingBox>
+        <TrendingBox data-test="trending">
             <h3>trending</h3>
             <hr></hr>
             {hashtags.map((hashtag, index) => {
-                return <Link key={index} to={`/hashtag/${hashtag.hashtagName}`} ><p># {hashtag.hashtagName}</p></Link>
+                return <Link key={index} to={`/hashtag/${hashtag.hashtagName}`} data-test="hashtag" >
+                    <p># {hashtag.hashtagName}</p>
+                </Link>
             })}
         </TrendingBox>
     )
