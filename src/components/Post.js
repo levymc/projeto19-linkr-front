@@ -10,7 +10,7 @@ import LikeButton from './LikeButton';
 import AuthContext from '../context/AuthContext';
 import ReactLoading from "react-loading";
 import { useNavigate } from 'react-router-dom';
-import HashtagParser from './HashtagParser/HashtagParser';
+import { Link } from 'react-router-dom';
 
 
 export default function Post(props) {
@@ -157,7 +157,7 @@ export default function Post(props) {
       };
 
     return (
-        <ContainerPost>
+        <ContainerPost data-test="post">
             <LeftSection>
                 <PerfilImg src={props.userImg} />
                 <LikeButton />
@@ -167,8 +167,8 @@ export default function Post(props) {
                 <IconsEditTrash isUserPost={isUserPost}>
                     {isUserPost && (
                         <>
-                            <BsFillPencilFill className="pencil" onClick={handleEditIconClick} onMouseDown={handleEditIconMouseDown} />
-                            <BiSolidTrashAlt className="trash" onClick={openDeleteModal} />
+                            <p data-test="edit-btn"><BsFillPencilFill className="pencil" onClick={handleEditIconClick} onMouseDown={handleEditIconMouseDown} /></p>
+                            <p data-test="delete-btn"><BiSolidTrashAlt className="trash" onClick={openDeleteModal} /></p>
                         </>
                     )}
                 </IconsEditTrash>
@@ -185,7 +185,28 @@ export default function Post(props) {
                     disabled={loading}
                 />
             ) : (
-                <HashtagParser content={originalText} />
+                <p data-test="description">
+                    {originalText.split(/\s+/).map((word, index) => {
+                        if (word.startsWith('#')) {
+                        const hashtag = word.substring(1);
+                        return (
+                            <Link
+                            to={`/hashtag/${hashtag}`} 
+                            key={index}
+                            onClick={() => handleHashtagClick(hashtag)}
+                            style={{
+                                textDecoration: 'none', 
+                                color: 'inherit', 
+                                fontWeight: 'bold', 
+                            }}
+                            >
+                            {word}{' '}
+                            </Link>
+                        );
+                        }
+                        return `${word} `;
+                    })}
+                </p>
 
 
             )}
@@ -206,13 +227,13 @@ export default function Post(props) {
                 <CustomContent>
                     <p>Are you sure you want<br />to delete this post?</p>
                     <div>
-                        <CustomButton cancel onClick={closeDeleteModal}>No, go back</CustomButton>
-                        {loading ? "" : <CustomButton onClick={handleDeleteConfirm}>Yes, delete it</CustomButton>}
+                        <CustomButton data-test="cancel" cancel onClick={closeDeleteModal}>No, go back</CustomButton>
+                        {loading ? "" : <CustomButton data-test="confirm" onClick={handleDeleteConfirm}>Yes, delete it</CustomButton>}
                         {loading && (
                             <ContainerLoading>
                                 <ReactLoading
                                     type="spin"
-                                    color="#ffffff"
+                                    color="#ffffff"     
                                     height={40}
                                     width={40}
                                 />
