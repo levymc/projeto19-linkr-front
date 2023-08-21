@@ -36,7 +36,7 @@ export default function FormPost(props) {
       })
       .catch((err) => {
         console.error(err);
-        alert("Houve um erro ao publicar seu link");
+        alert("There was an error publishing your link");
       })
       .finally(() => {
         setLoading(false);
