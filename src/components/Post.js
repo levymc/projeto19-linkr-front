@@ -163,7 +163,7 @@ export default function Post(props) {
                 <LikeButton />
             </LeftSection>
             <div>
-                <h2 onClick={() => navigate(`/user/${postUserId}`)}>{props.name}</h2>
+                <h2 data-test="username" onClick={() => navigate(`/user/${postUserId}`)}>{props.name}</h2>
                 <IconsEditTrash isUserPost={isUserPost}>
                     {isUserPost && (
                         <>

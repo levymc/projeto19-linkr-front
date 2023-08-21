@@ -45,13 +45,13 @@ export default function FormPost(props) {
   };
 
   return (
-    <SCFormPost onSubmit={handleSubtmit}>
+    <SCFormPost data-test="publish-box" onSubmit={handleSubtmit}>
       <LeftSection>
         <PerfilImg src="https://yt3.googleusercontent.com/oZCGpPQc5qat2YIzVs_h1LTvrtpV6G--Q2CopkOoAa7d1WvHDohPzWO-vSEnQ4GljcQOO_6QkQ=s900-c-k-c0x00ffffff-no-rj" />
       </LeftSection>
       <span>What are you going to share today?</span>
       <ContainerUrl>
-        <input
+        <input data-test="link"
           placeholder="https://"
           value={postUrl}
           onChange={(e) => setPostUrl(e.target.value)}
@@ -60,14 +60,14 @@ export default function FormPost(props) {
         />
       </ContainerUrl>
       <ContainerContent>
-        <StyledInput
+        <StyledInput data-test="description"
           placeholder="Awesome article about #javascript"
           value={contentValue}
           onChange={(e) => setContentValue(e.target.value)}
           type="text"
         />
       </ContainerContent>
-      <ContainerBtn>
+      <ContainerBtn data-test="publish-btn">
         <Btn
           type="submit"
           backGround={loading ? "grey" : "#1877F2"}
