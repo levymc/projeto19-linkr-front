@@ -2,7 +2,6 @@ import styled from "styled-components";
 import React, { useState } from "react";
 import axios from "axios";
 import { simpleModal } from "./modais/modais.js";
-// import ReactLoading from 'react-loading';
 import sleep from "./util/sleep.js";
 import { usePostsContext } from "./Context.js";
 

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
 import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
 
 export default function UrlPreview(props) {
 
@@ -12,7 +13,7 @@ export default function UrlPreview(props) {
     }
 
     return (
-            <a target="_blank" rel="noopener noreferrer" href={props.postUrl} style={{ textDecoration: 'none', textDecorationColor: "inherit" }}>
+            <Link target="_blank" rel="noopener noreferrer" href={props.postUrl} style={{ textDecoration: 'none', textDecorationColor: "inherit" }}>
                 <SCUrlPreview data-test="link">
                     <Helmet>
                         <meta property="og:image:type" content="image/jpeg" />
@@ -33,7 +34,7 @@ export default function UrlPreview(props) {
                     <SCImg src={props.metaImg} alt="Imagem do post" />
                 
                 </SCUrlPreview>
-            </a>
+            </Link>
     );
 }
 
