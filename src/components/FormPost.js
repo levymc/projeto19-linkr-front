@@ -53,6 +53,7 @@ export default function FormPost(props) {
       <ContainerUrl>
         <input
           placeholder="https://"
+          data-test="link"
           value={postUrl}
           onChange={(e) => setPostUrl(e.target.value)}
           type="url"
