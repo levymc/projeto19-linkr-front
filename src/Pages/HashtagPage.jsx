@@ -7,6 +7,7 @@ import { usePostsContext } from "../components/Context";
 import { useParams } from "react-router-dom";
 import Header from "../components/Header/Header";
 import { simpleModal } from "../components/modais/modais";
+import Trending from "../components/Trending";
 
 export default function HashtagPage() {
 
@@ -25,16 +26,16 @@ export default function HashtagPage() {
                 console.error("Erro ao obter os postInfo:", error);
                 simpleModal("Erro ao obter os postInfo: " + error, "error")
             })
-    }, []);
+    }, [postsInfos]);
 
     return (
         <Container>
             <Header />
-            <Body>
-                {postsInfos.posts ? (
-                    <>
+            {postsInfos.posts ? (
+                <BodyContent>
+                    <BodyContentLeft>
                         <TitleContainer>
-                            <span onClick={() => console.log(postsInfos)}>#{hashtag}</span>
+                            <h2 data-test="hashtag-title"># {hashtag}</h2>
                         </TitleContainer>
                         {postsInfos.posts && postsInfos.posts.map((post, i) => {
                             return (
@@ -53,18 +54,21 @@ export default function HashtagPage() {
                                 />
                             )
                         })}
-                    </>
-                ) : (
-                    <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
-                )}
-            </Body>
+                    </BodyContentLeft>
+                    <div className="trending-div">
+                        <Trending />
+                    </div>
+                </BodyContent>
+            ) : (
+                <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
+            )}
         </Container>
     );
 }
 
 const TitleContainer = styled.div`
   color: #fff;
-  font-family: "Lato", sans-serif;
+  font-family: "Oswald", sans-serif;
   font-size: 43px;
   font-weight: 700;
   display: flex;
@@ -74,7 +78,6 @@ const TitleContainer = styled.div`
 `;
 
 const Container = styled.div`
-  padding-top: 6em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -83,18 +86,22 @@ const Container = styled.div`
   min-height: 100vh;
   height: auto;
   background-color: #333333;
-  /* padding-bottom: 5vh; */
   overflow-y: hidden;
 `;
 
-const Body = styled.div`
-  /* position: absolute; */
+const BodyContent = styled.div`
+  display: flex;
+  .trending-div {
+    margin-top: 130px;
+  }
+`;
+
+const BodyContentLeft = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 2em;
-
-  padding: 2em;
-  width: 50%;
   height: 60%;
+  padding: 2em;
+  max-width: 760px;
 `;

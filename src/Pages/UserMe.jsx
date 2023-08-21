@@ -7,6 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Header from "../components/Header/Header";
 import sleep from "../components/util/sleep";
 import { simpleModal } from "../components/modais/modais";
+import Trending from "../components/Trending";
 
 export default function UserMe() {
     const [userPosts, setUserPosts] = useState([])
@@ -32,10 +33,9 @@ export default function UserMe() {
     return (
         <Container>
             <Header />
-            <Body onClick={() => console.log(id)}>
-                {userPosts ? (
-
-                    <>
+            {userPosts ? (
+                <BodyContent>
+                    <BodyContentLeft>
                         <TitleContainer>
                             <span>{userPosts.user ? userPosts.user.name : "Carregando..."}'s posts</span>
                         </TitleContainer>
@@ -56,12 +56,14 @@ export default function UserMe() {
                                 />
                             )
                         })}
-
-                    </>
-                ) : (
-                    <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
-                )}
-            </Body>
+                    </BodyContentLeft>
+                    <div className="trending-div">
+                        <Trending />
+                    </div>
+                </BodyContent>
+            ) : (
+                <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
+            )}
         </Container>
     );
 }
@@ -87,16 +89,24 @@ const Container = styled.div`
   min-height: 100vh;
   height: auto;
   background-color: #333333;
+  /* padding-bottom: 5vh; */
   overflow-y: hidden;
 `;
 
-const Body = styled.div`
+const BodyContent = styled.div`
+  display: flex;
+  .trending-div {
+    margin-top: 130px;
+  }
+`;
+
+const BodyContentLeft = styled.div`
+  /* position: absolute; */
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 2em;
-
-  padding: 2em;
-  width: 50%;
   height: 60%;
+  padding: 2em;
+  max-width: 760px;
 `;
