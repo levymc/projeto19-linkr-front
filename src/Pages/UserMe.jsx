@@ -10,62 +10,67 @@ import { simpleModal } from "../components/modais/modais";
 import Trending from "../components/Trending";
 
 export default function UserMe() {
-    const [userPosts, setUserPosts] = useState([])
-    const storedToken = localStorage.getItem("token")
-    const config = { headers: { Authorization: `Bearer ${storedToken}` } }
-    const { id } = useParams()
+  const [userPosts, setUserPosts] = useState([]);
+  const storedToken = localStorage.getItem("token");
+  const config = { headers: { Authorization: `Bearer ${storedToken}` } };
+  const { id } = useParams();
 
-    useEffect(() => {
-        if (id) {
-            const url = `http://localhost:5000/userPosts/${id}`
+  useEffect(() => {
+    if (id) {
+      const url = `${process.env.REACT_APP_API_URL}/userPosts/${id}`;
 
-            axios.get(url, config).then((response) => {
-                setUserPosts(response.data)
-                console.log(response.data)
-            })
-                .catch((error) => {
-                    console.error("Erro ao obter os postInfo:", error)
-                    simpleModal("Erro ao obter os postInfo: " + error, "error")
-                })
-        }
-    }, [id])
+      axios
+        .get(url, config)
+        .then((response) => {
+          setUserPosts(response.data);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Erro ao obter os postInfo:", error);
+          simpleModal("Erro ao obter os postInfo: " + error, "error");
+        });
+    }
+  }, [id]);
 
-    return (
-        <Container>
-            <Header />
-            {userPosts ? (
-                <BodyContent>
-                    <BodyContentLeft>
-                        <TitleContainer>
-                            <span>{userPosts.user ? userPosts.user.name : "Carregando..."}'s posts</span>
-                        </TitleContainer>
-                        {userPosts.posts && userPosts.posts.map((post, i) => {
-                            return (
-                                <Post
-                                    key={i}
-                                    name={post.name}
-                                    text={post.content}
-                                    description={post.descriptionMetadata}
-                                    title={post.titleMetadata}
-                                    hashtag={post.hashtags}
-                                    metaImg={post.imgMetadata}
-                                    userImg={post.imageUrl}
-                                    postUrl={post.postUrl}
-                                    postId={post.postId}
-                                    userId={post.userId}
-                                />
-                            )
-                        })}
-                    </BodyContentLeft>
-                    <div className="trending-div">
-                        <Trending />
-                    </div>
-                </BodyContent>
-            ) : (
-                <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
-            )}
-        </Container>
-    );
+  return (
+    <Container>
+      <Header />
+      {userPosts ? (
+        <BodyContent>
+          <BodyContentLeft>
+            <TitleContainer>
+              <span>
+                {userPosts.user ? userPosts.user.name : "Carregando..."}'s posts
+              </span>
+            </TitleContainer>
+            {userPosts.posts &&
+              userPosts.posts.map((post, i) => {
+                return (
+                  <Post
+                    key={i}
+                    name={post.name}
+                    text={post.content}
+                    description={post.descriptionMetadata}
+                    title={post.titleMetadata}
+                    hashtag={post.hashtags}
+                    metaImg={post.imgMetadata}
+                    userImg={post.imageUrl}
+                    postUrl={post.postUrl}
+                    postId={post.postId}
+                    userId={post.userId}
+                  />
+                );
+              })}
+          </BodyContentLeft>
+          <div className="trending-div">
+            <Trending />
+          </div>
+        </BodyContent>
+      ) : (
+        <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
+      )}
+    </Container>
+  );
 }
 
 const TitleContainer = styled.div`

@@ -6,15 +6,16 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const LikeButton = ({ userId, postId, isLiked }) => {
   const [liked, setLiked] = useState(isLiked);
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
-  const handleLike = async (userId,postId) => {
-  
+  const handleLike = async (userId, postId) => {
     try {
-         
       setLoading(true);
-      console.log("postId")
-      await axios.post(`http://localhost:5000/like`, { userId, postId });
+      console.log("postId");
+      await axios.post(`${process.env.REACT_APP_API_URL}/like`, {
+        userId,
+        postId,
+      });
       setLiked(!liked);
     } catch (err) {
       console.error("Erro ao curtir a postagem", err);
@@ -31,9 +32,8 @@ const LikeButton = ({ userId, postId, isLiked }) => {
     <ContainerLikes onClick={() => handleLike(3, 1)}>
       {!liked ? (
         <FavoriteBorderIcon style={{ color: "grey" }} />
-       
-      ) : (  <FavoriteIcon style={{ color: "red" }} />
-        
+      ) : (
+        <FavoriteIcon style={{ color: "red" }} />
       )}
       <span>13 likes</span>
     </ContainerLikes>

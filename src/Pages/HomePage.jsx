@@ -16,19 +16,20 @@ export default function HomePage() {
   const navigate = useNavigate();
   const { postsInfos, setPostsInfos, newPost, setNewPost } = usePostsContext();
   const { user } = useContext(AuthContext);
-  const storedToken = localStorage.getItem("token")
+  const storedToken = localStorage.getItem("token");
   const config = { headers: { Authorization: `Bearer ${storedToken}` } };
 
   useEffect(() => {
-    axios.get("http://localhost:5000/posts", config).then((response) => {
-      setPostsInfos(response.data);
-      console.log(response.data)
-    })
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/posts`, config)
+      .then((response) => {
+        setPostsInfos(response.data);
+        console.log(response.data);
+      })
       .catch((error) => {
         console.error("Erro ao obter os postInfo:", error);
-        simpleModal("Erro ao obter os postInfo: " + error, "error")
-      })
-
+        simpleModal("Erro ao obter os postInfo: " + error, "error");
+      });
   }, [newPost]);
 
   return (
@@ -41,23 +42,24 @@ export default function HomePage() {
               <span onClick={() => console.log(postsInfos)}>timeline</span>
             </TitleContainer>
             <FormPost />
-            {postsInfos.posts && postsInfos.posts.map((post, i) => {
-              return (
-                <Post
-                  key={i}
-                  name={post.name}
-                  text={post.content}
-                  description={post.descriptionMetadata}
-                  title={post.titleMetadata}
-                  hashtag={post.hashtags}
-                  metaImg={post.imgMetadata}
-                  userImg={post.imageUrl}
-                  postUrl={post.postUrl}
-                  postId={post.postId}
-                  userId={post.userId}
-                />
-              )
-            })}
+            {postsInfos.posts &&
+              postsInfos.posts.map((post, i) => {
+                return (
+                  <Post
+                    key={i}
+                    name={post.name}
+                    text={post.content}
+                    description={post.descriptionMetadata}
+                    title={post.titleMetadata}
+                    hashtag={post.hashtags}
+                    metaImg={post.imgMetadata}
+                    userImg={post.imageUrl}
+                    postUrl={post.postUrl}
+                    postId={post.postId}
+                    userId={post.userId}
+                  />
+                );
+              })}
           </BodyContentLeft>
           <div className="trending-div">
             <Trending />
