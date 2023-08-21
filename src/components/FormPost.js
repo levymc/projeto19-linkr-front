@@ -51,8 +51,9 @@ export default function FormPost(props) {
       </LeftSection>
       <span>What are you going to share today?</span>
       <ContainerUrl>
-        <input data-test="link"
+        <input 
           placeholder="https://"
+          data-test="link"
           value={postUrl}
           onChange={(e) => setPostUrl(e.target.value)}
           type="url"

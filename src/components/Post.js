@@ -176,6 +176,7 @@ export default function Post(props) {
 
             {isEditing ? (
                 <textarea
+                    data-test="edit-input"
                     ref={editFieldRef}
                     type="text"
                     value={originalText}
