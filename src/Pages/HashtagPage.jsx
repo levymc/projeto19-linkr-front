@@ -26,7 +26,7 @@ export default function HashtagPage() {
                 console.error("Erro ao obter os postInfo:", error);
                 simpleModal("Erro ao obter os postInfo: " + error, "error")
             })
-    }, []);
+    }, [postsInfos]);
 
     return (
         <Container>
