@@ -10,6 +10,7 @@ import AuthContext from "../context/AuthContext";
 import Header from "../components/Header/Header";
 import sleep from "../components/util/sleep";
 import { simpleModal } from "../components/modais/modais";
+import Trending from "../components/Trending";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -33,10 +34,9 @@ export default function HomePage() {
   return (
     <Container>
       <Header />
-      <Body>
-        {postsInfos.posts ? (
-
-          <>
+      {postsInfos.posts ? (
+        <BodyContent>
+          <BodyContentLeft>
             <TitleContainer>
               <span onClick={() => console.log(postsInfos)}>timeline</span>
             </TitleContainer>
@@ -58,12 +58,14 @@ export default function HomePage() {
                 />
               )
             })}
-
-          </>
-        ) : (
-          <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
-        )}
-      </Body>
+          </BodyContentLeft>
+          <div className="trending-div">
+            <Trending />
+          </div>
+        </BodyContent>
+      ) : (
+        <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
+      )}
     </Container>
   );
 }
@@ -93,14 +95,20 @@ const Container = styled.div`
   overflow-y: hidden;
 `;
 
-const Body = styled.div`
+const BodyContent = styled.div`
+  display: flex;
+  .trending-div {
+    margin-top: 130px;
+  }
+`;
+
+const BodyContentLeft = styled.div`
   /* position: absolute; */
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 2em;
-
-  padding: 2em;
-  width: 50%;
   height: 60%;
+  padding: 2em;
+  max-width: 760px;
 `;
