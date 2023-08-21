@@ -163,7 +163,7 @@ export default function Post(props) {
                 <LikeButton />
             </LeftSection>
             <div>
-                <h2 onClick={() => navigate(`/user/${postUserId}`)}>{props.name}</h2>
+                <h2 data-test="username" onClick={() => navigate(`/user/${postUserId}`)}>{props.name}</h2>
                 <IconsEditTrash isUserPost={isUserPost}>
                     {isUserPost && (
                         <>
@@ -176,6 +176,7 @@ export default function Post(props) {
 
             {isEditing ? (
                 <textarea
+                    data-test="edit-input"
                     ref={editFieldRef}
                     type="text"
                     value={originalText}
