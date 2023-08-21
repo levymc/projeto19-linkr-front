@@ -39,7 +39,7 @@ export default function FormPost(props) {
       })
       .finally(() => {
         setLoading(false);
-        // window.location.reload();
+        window.location.reload();
       });
   };
 
