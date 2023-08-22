@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 import Post from "../components/Post";
 import FormPost from "../components/FormPost";
@@ -12,6 +12,8 @@ import sleep from "../components/util/sleep";
 import { simpleModal } from "../components/modais/modais";
 import Trending from "../components/Trending";
 import useInterval from "use-interval";
+import InfiniteScroll from 'react-infinite-scroller';
+
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -21,16 +23,31 @@ export default function HomePage() {
   const config = { headers: { Authorization: `Bearer ${storedToken}` } };
   const [cont, setCont] = useState(0);
   const [amountNewPosts, setAmountNewPosts] = useState(0)
+  const [newLimit, setNewLimit] = useState(() => {
+    const storedLimit = sessionStorage.getItem("newLimit");
+    return storedLimit ? parseInt(storedLimit) : 10;
+  });
 
-  const getPosts = (mode) => {
+  const handleBtnNewPosts = () => {
+    getPosts(1)
+    setAmountNewPosts(0)
+  }
+
+  const getPosts = (mode, limit = newLimit) => {
+    let url = `${process.env.REACT_APP_API_URL}/posts`;
+  
+    if (limit !== null) {
+      url += `?limit=${limit}`;
+    }
+  
     axios
-      .get(`${process.env.REACT_APP_API_URL}/posts`, config)
+      .get(url, config)
       .then((response) => {
         if (mode === 1) {
           setPostsInfos(response.data);
         } else {
-          const numberOfNewPosts = response.data.posts[0].postId - postsInfos.posts[0].postId
-          setAmountNewPosts(numberOfNewPosts)
+          const numberOfNewPosts = response.data.posts[0].postId - postsInfos.posts[0].postId;
+          setAmountNewPosts(numberOfNewPosts);
         }
       })
       .catch((error) => {
@@ -38,25 +55,37 @@ export default function HomePage() {
         simpleModal("Erro ao obter os postInfo: " + error, "error");
       });
   };
-  
   useEffect(() => {
     getPosts(1)
   }, [cont]);
 
+  useEffect(() => {
+    sessionStorage.setItem("newLimit", newLimit.toString());
+    getPosts(1, newLimit)
+  }, [newLimit]);
+
+  useEffect(() => { 
+    if (document.getElementById("sentinela")) {
+      const intersectionObserver = new IntersectionObserver((entries) => {
+        if(entries.some((entry) => entry.isIntersecting)){
+          console.log("Scrollou!")
+          setNewLimit((prevLimit) => prevLimit + 10)
+        }
+      });
+      intersectionObserver.observe(document.getElementById("sentinela"));
+      return () => intersectionObserver.disconnect();
+    }
+  }, [newLimit,])
+  
+
   useInterval(() => {
     getPosts(0);
-    console.log("recarregou os posts")
-    console.log(amountNewPosts)
   }, 15000);
 
-  const handleBtnNewPosts = () => {
-    getPosts(1)
-    setAmountNewPosts(0)
-  }
-
+  
   return (
     <Container>
-      <Header />
+      <Header/>
       {postsInfos.posts ? (
         <BodyContent>
           <BodyContentLeft>
@@ -65,26 +94,29 @@ export default function HomePage() {
             </TitleContainer>
             <FormPost cont={cont} setCont={setCont} />
             {amountNewPosts > 0 && <BtnNewPosts onClick={handleBtnNewPosts}>Existem {amountNewPosts} posts novos</BtnNewPosts> }
-            {postsInfos.posts.length > 0 ?
-              postsInfos.posts.map((post, i) => {
-                return (
-                  <Post
-                    key={i}
-                    name={post.name}
-                    text={post.content}
-                    description={post.descriptionMetadata}
-                    title={post.titleMetadata}
-                    hashtag={post.hashtags}
-                    metaImg={post.imgMetadata}
-                    userImg={post.imageUrl}
-                    postUrl={post.postUrl}
-                    postId={post.postId}
-                    userId={post.userId}
-                    cont={cont}
-                    setCont={setCont}
-                  />
-                );
-              }) : <span data-test="message">There are no posts yet</span>}
+              {postsInfos.posts.length > 0 ?
+                postsInfos.posts.map((post, i) => {
+                  return (
+                    <Post
+                      key={i}
+                      name={post.name}
+                      text={post.content}
+                      description={post.descriptionMetadata}
+                      title={post.titleMetadata}
+                      hashtag={post.hashtags}
+                      metaImg={post.imgMetadata}
+                      userImg={post.imageUrl}
+                      postUrl={post.postUrl}
+                      postId={post.postId}
+                      userId={post.userId}
+                      cont={cont}
+                      setCont={setCont}
+                    />
+                  );
+                }) : <span data-test="message">There are no posts yet</span>}
+            <Sentinela id="sentinela">{postsInfos.posts.length === newLimit 
+                                      ? <>Loading more posts <ReactLoading type={"spin"} color={"#6D6D6D"} height={150} width={70} /></>
+                                      : "There are no more posts to load"}</Sentinela>
           </BodyContentLeft>
           <div className="trending-div">
             <Trending />
@@ -92,10 +124,22 @@ export default function HomePage() {
         </BodyContent>
       ) : (
         <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
-      )}
+        )}
     </Container>
   );
 }
+
+const Sentinela = styled.div`
+  padding-top: 1em;
+  height: 4em;
+  width: 100%;
+  color: #6D6D6D;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1em;
+`
 
 const BtnNewPosts = styled.button`
   margin-top: 1.5em;

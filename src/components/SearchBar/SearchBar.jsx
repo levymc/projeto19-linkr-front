@@ -29,7 +29,7 @@ export default function SearchInput() {
     }
   };
 
-  console.log(searchResults);
+  // console.log(searchResults);
 
   return (
     <Container>
