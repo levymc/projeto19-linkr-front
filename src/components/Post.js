@@ -4,6 +4,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import UrlPreview from './UrlPreview';
 import { BsFillPencilFill } from 'react-icons/bs';
 import { BiSolidTrashAlt } from 'react-icons/bi';
+import { AiOutlineComment } from 'react-icons/ai';
 import axios from "axios";
 import ReactModal from 'react-modal';
 import LikeButton from './LikeButton';
@@ -163,6 +164,8 @@ export default function Post(props) {
             <LeftSection>
                 <PerfilImg src={props.userImg} />
                 <LikeButton />
+                <AiOutlineComment className="comments"/>
+                <p>0 comments</p>
             </LeftSection>
             <div>
                 <h2 data-test="username" onClick={() => navigate(`/user/${postUserId}`)}>{props.name}</h2>
@@ -315,7 +318,7 @@ const LeftSection = styled.section`
     position: absolute;
     left: 0;
     top: 0;
-    background-color: #333333;
+    background-color: #171717;
     height: calc(100% - 32px);
     width: 12%;
     padding-top: 2em;
@@ -325,6 +328,21 @@ const LeftSection = styled.section`
     flex-direction: column;
     align-items: center;
     gap: 1.2em;
+    .comments{
+        font-size: 25px;
+        cursor: pointer;
+    }
+    p{
+        color: #FFF;
+        text-align: center;
+        font-family: Lato;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        position: relative;
+        bottom: 13px;
+    }
 `
 
 const IconsEditTrash = styled.div`
