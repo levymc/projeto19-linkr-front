@@ -87,7 +87,7 @@ export default function HomePage() {
     <Container>
       <Header/>
       {postsInfos.posts ? (
-        <BodyContent onClick={() => console.log(postsInfos.posts.length, newLimit, postsInfos.posts.length === newLimit)} >
+        <BodyContent>
           <BodyContentLeft>
             <TitleContainer>
               <span>timeline</span>
