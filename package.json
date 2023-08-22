@@ -24,6 +24,8 @@
     "styled-components": "^6.0.7",
     "sweetalert2": "^11.7.23",
     "url-metadata": "^3.0.2",
+    "use-interval": "^1.4.0",
+    "usehooks-ts": "^2.9.1",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

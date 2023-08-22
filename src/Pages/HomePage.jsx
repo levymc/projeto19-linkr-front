@@ -11,6 +11,7 @@ import Header from "../components/Header/Header";
 import sleep from "../components/util/sleep";
 import { simpleModal } from "../components/modais/modais";
 import Trending from "../components/Trending";
+import useInterval from "use-interval";
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -19,19 +20,39 @@ export default function HomePage() {
   const storedToken = localStorage.getItem("token");
   const config = { headers: { Authorization: `Bearer ${storedToken}` } };
   const [cont, setCont] = useState(0);
+  const [amountNewPosts, setAmountNewPosts] = useState(0)
 
-  useEffect(() => {
+  const getPosts = (mode) => {
     axios
       .get(`${process.env.REACT_APP_API_URL}/posts`, config)
       .then((response) => {
-        setPostsInfos(response.data);
-        console.log(response.data);
+        if (mode === 1) {
+          setPostsInfos(response.data);
+        } else {
+          const numberOfNewPosts = response.data.posts[0].postId - postsInfos.posts[0].postId
+          setAmountNewPosts(numberOfNewPosts)
+        }
       })
       .catch((error) => {
         console.error("Erro ao obter os postInfo:", error);
         simpleModal("Erro ao obter os postInfo: " + error, "error");
       });
+  };
+  
+  useEffect(() => {
+    getPosts(1)
   }, [cont]);
+
+  useInterval(() => {
+    getPosts(0);
+    console.log("recarregou os posts")
+    console.log(amountNewPosts)
+  }, 15000);
+
+  const handleBtnNewPosts = () => {
+    getPosts(1)
+    setAmountNewPosts(0)
+  }
 
   return (
     <Container>
@@ -43,6 +64,7 @@ export default function HomePage() {
               <span>timeline</span>
             </TitleContainer>
             <FormPost cont={cont} setCont={setCont} />
+            {amountNewPosts > 0 && <BtnNewPosts onClick={handleBtnNewPosts}>Existem {amountNewPosts} posts novos</BtnNewPosts> }
             {postsInfos.posts.length > 0 ?
               postsInfos.posts.map((post, i) => {
                 return (
@@ -74,6 +96,20 @@ export default function HomePage() {
     </Container>
   );
 }
+
+const BtnNewPosts = styled.button`
+  margin-top: 1.5em;
+  height: 4em;
+  width: 100%;
+  border-radius: 1em;
+  background: #1877F2;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  color: #FFF;
+  font-family: Lato;
+  font-size: 16px;
+  font-weight: 400;
+`
 
 const TitleContainer = styled.div`
   color: #fff;
