@@ -15,14 +15,16 @@ import { Link } from 'react-router-dom';
 
 export default function Post(props) {
     const [originalText, setOriginalText] = useState(props.text)
-    console.log(originalText, "texto original")
-
+    //console.log(originalText, "texto original")
+    useEffect(() => {
+        setOriginalText(props.text);
+    }, [props.text]);
     const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedText, setEditedText] = useState(props.text);
     const [hashtagWords, setHashtagWords] = useState([]);
-    const [editedHashtags, setEditedHashtags] = useState(()=>{
-        if(props.hashtag) return props.hashtag;
+    const [editedHashtags, setEditedHashtags] = useState(() => {
+        if (props.hashtag) return props.hashtag;
         else return "";
     });
     const [onlyText, setOnlyText] = useState(props.text)
@@ -33,7 +35,7 @@ export default function Post(props) {
     const navigate = useNavigate()
     const { user } = useContext(AuthContext);
     const postUserId = props.userId
-    console.log(editedHashtags, "hashtags")
+    //console.log(editedHashtags, "hashtags")
 
     if (user.id === postUserId) {
         isUserPost = true;
@@ -63,7 +65,7 @@ export default function Post(props) {
             console.log(response)
             setLoading(false)
             closeDeleteModal();
-            window.location.reload();
+            props.setCont((props.cont) - 1)
         } catch (error) {
             console.error("Erro ao excluir o post", error);
             setLoading(false)
@@ -129,7 +131,7 @@ export default function Post(props) {
             setIsEditing(false);
 
             const hashtags = hashtagWords.join(" ")
-        
+
             try {
                 await axios.put(`${process.env.REACT_APP_API_URL}/posts`, {
                     text: originalText,
@@ -154,7 +156,7 @@ export default function Post(props) {
 
     const handleHashtagClick = (hashtag) => {
         navigate(`/hashtag/${hashtag}`);
-      };
+    };
 
     return (
         <ContainerPost data-test="post">
@@ -189,21 +191,21 @@ export default function Post(props) {
                 <p data-test="description">
                     {originalText.split(/\s+/).map((word, index) => {
                         if (word.startsWith('#')) {
-                        const hashtag = word.substring(1);
-                        return (
-                            <Link
-                            to={`/hashtag/${hashtag}`} 
-                            key={index}
-                            onClick={() => handleHashtagClick(hashtag)}
-                            style={{
-                                textDecoration: 'none', 
-                                color: 'inherit', 
-                                fontWeight: 'bold', 
-                            }}
-                            >
-                            {word}{' '}
-                            </Link>
-                        );
+                            const hashtag = word.substring(1);
+                            return (
+                                <Link
+                                    to={`/hashtag/${hashtag}`}
+                                    key={index}
+                                    onClick={() => handleHashtagClick(hashtag)}
+                                    style={{
+                                        textDecoration: 'none',
+                                        color: 'inherit',
+                                        fontWeight: 'bold',
+                                    }}
+                                >
+                                    {word}{' '}
+                                </Link>
+                            );
                         }
                         return `${word} `;
                     })}
@@ -212,10 +214,10 @@ export default function Post(props) {
 
             )}
             <UrlPreview
-                title = {props.title}
-                metaImg = {props.metaImg}
-                description = {props.description}
-                postUrl = {props.postUrl}
+                title={props.title}
+                metaImg={props.metaImg}
+                description={props.description}
+                postUrl={props.postUrl}
             />
             {isDeleteModalOpen && <BackgroundOverlay />}
             <ReactModal
@@ -234,7 +236,7 @@ export default function Post(props) {
                             <ContainerLoading>
                                 <ReactLoading
                                     type="spin"
-                                    color="#ffffff"     
+                                    color="#ffffff"
                                     height={40}
                                     width={40}
                                 />

@@ -5,7 +5,7 @@ import { simpleModal } from "./modais/modais.js";
 import sleep from "./util/sleep.js";
 import { usePostsContext } from "./Context.js";
 
-export default function FormPost(props) {
+export default function FormPost({ cont, setCont }) {
   const { postsInfos, setPostsInfos, newPost, setNewPost } = usePostsContext();
   const [postUrl, setPostUrl] = useState("");
   const [contentValue, setContentValue] = useState("");
@@ -32,6 +32,7 @@ export default function FormPost(props) {
         // simpleModal("Postagem enviada com sucesso!", "success");
         setPostUrl("");
         setContentValue("");
+        setCont(cont + 1);
       })
       .catch((err) => {
         console.error(err);
@@ -39,46 +40,45 @@ export default function FormPost(props) {
       })
       .finally(() => {
         setLoading(false);
-        window.location.reload();
       });
   };
 
-    return (
-        <SCFormPost data-test="publish-box" onSubmit={handleSubtmit}>
-            <LeftSection>
-                <PerfilImg src="https://yt3.googleusercontent.com/oZCGpPQc5qat2YIzVs_h1LTvrtpV6G--Q2CopkOoAa7d1WvHDohPzWO-vSEnQ4GljcQOO_6QkQ=s900-c-k-c0x00ffffff-no-rj" />
-            </LeftSection>
-            <span>What are you going to share today?</span>
-            <ContainerUrl>
-                <input
-                    placeholder='https://'
-                    value={postUrl}
-                    onChange={(e) => setPostUrl(e.target.value)}
-                    type="url"
-                    data-test="link"
-                    required
-                />
-            </ContainerUrl>
-            <ContainerContent>
-                <StyledInput
-                    placeholder='Awesome article about #javascript'
-                    value={contentValue}
-                    data-test="description"
-                    onChange={(e) => setContentValue(e.target.value)}
-                    type="text"
-                />
-            </ContainerContent>
-            <ContainerBtn>
-                <Btn type="submit" backGround={loading ? "grey" : "#1877F2"} data-test="publish-btn" disabled={loading}>
-                    {loading 
-                        ? "Publishing..."
-                        : "Publish"
-                    }
-                    
-                </Btn>
-            </ContainerBtn>
-        </SCFormPost>
-    );
+  return (
+    <SCFormPost data-test="publish-box" onSubmit={handleSubtmit}>
+      <LeftSection>
+        <PerfilImg src="https://yt3.googleusercontent.com/oZCGpPQc5qat2YIzVs_h1LTvrtpV6G--Q2CopkOoAa7d1WvHDohPzWO-vSEnQ4GljcQOO_6QkQ=s900-c-k-c0x00ffffff-no-rj" />
+      </LeftSection>
+      <span>What are you going to share today?</span>
+      <ContainerUrl>
+        <input
+          placeholder='https://'
+          value={postUrl}
+          onChange={(e) => setPostUrl(e.target.value)}
+          type="url"
+          data-test="link"
+          required
+        />
+      </ContainerUrl>
+      <ContainerContent>
+        <StyledInput
+          placeholder='Awesome article about #javascript'
+          value={contentValue}
+          data-test="description"
+          onChange={(e) => setContentValue(e.target.value)}
+          type="text"
+        />
+      </ContainerContent>
+      <ContainerBtn>
+        <Btn type="submit" backGround={loading ? "grey" : "#1877F2"} data-test="publish-btn" disabled={loading}>
+          {loading
+            ? "Publishing..."
+            : "Publish"
+          }
+
+        </Btn>
+      </ContainerBtn>
+    </SCFormPost>
+  );
 }
 
 const ContainerBtn = styled.div`

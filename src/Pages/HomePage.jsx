@@ -18,6 +18,7 @@ export default function HomePage() {
   const { user } = useContext(AuthContext);
   const storedToken = localStorage.getItem("token");
   const config = { headers: { Authorization: `Bearer ${storedToken}` } };
+  const [cont, setCont] = useState(0);
 
   useEffect(() => {
     axios
@@ -30,7 +31,7 @@ export default function HomePage() {
         console.error("Erro ao obter os postInfo:", error);
         simpleModal("Erro ao obter os postInfo: " + error, "error");
       });
-  }, [newPost]);
+  }, [cont]);
 
   return (
     <Container>
@@ -41,7 +42,7 @@ export default function HomePage() {
             <TitleContainer>
               <span>timeline</span>
             </TitleContainer>
-            <FormPost />
+            <FormPost cont={cont} setCont={setCont} />
             {postsInfos.posts.length > 0 ?
               postsInfos.posts.map((post, i) => {
                 return (
@@ -57,9 +58,11 @@ export default function HomePage() {
                     postUrl={post.postUrl}
                     postId={post.postId}
                     userId={post.userId}
+                    cont={cont}
+                    setCont={setCont}
                   />
                 );
-              }) : <span data-test="message">There are no posts yet</span> }
+              }) : <span data-test="message">There are no posts yet</span>}
           </BodyContentLeft>
           <div className="trending-div">
             <Trending />
