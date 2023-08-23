@@ -39,7 +39,22 @@ export default function Post(props) {
 
     //comments 
     const [commentInput, setCommentInput] = useState("");
+    const [commentCount, setCommentCount] = useState(0);
 
+    const fetchCommentCount = async () => {
+        try {
+          const response = await axios.get(`${process.env.REACT_APP_API_URL}/numberComments/${props.postId}`);
+          setCommentCount(parseInt(response.data.commentcount));
+        } catch (error) {
+          console.error("Erro ao obter contador de comentários", error);
+        }
+      };
+      
+      useEffect(() => {
+        fetchCommentCount();
+      }, []);
+
+    /////////////////////////////////////////////////////////      
 
     useEffect(() => {
         setOriginalText(props.text);
@@ -180,7 +195,7 @@ export default function Post(props) {
                     <PerfilImg src={props.userImg} />
                     <LikeButton />
                     <AiOutlineComment className="comments" onClick={() => setCommentsVisible(!commentsVisible)} />
-                    <p>0 comments</p>
+                    <p>{commentCount} comments</p>
                 </LeftSection>
                 <div>
                     <h2 data-test="username" onClick={() => navigate(`/user/${postUserId}`)}>{props.name}</h2>
