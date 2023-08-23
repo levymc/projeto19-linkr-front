@@ -1,9 +1,11 @@
 import styled from 'styled-components'
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { SlPaperPlane } from 'react-icons/sl';
 import UrlPreview from './UrlPreview';
 import { BsFillPencilFill } from 'react-icons/bs';
 import { BiSolidTrashAlt } from 'react-icons/bi';
+import { AiOutlineComment } from 'react-icons/ai';
 import axios from "axios";
 import ReactModal from 'react-modal';
 import LikeButton from './LikeButton';
@@ -11,6 +13,8 @@ import AuthContext from '../context/AuthContext';
 import ReactLoading from "react-loading";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { CommentField, ContainerComments } from './StyledComments';
+import Comment from './Comment';
 
 
 export default function Post(props) {
@@ -36,6 +40,8 @@ export default function Post(props) {
     const { user } = useContext(AuthContext);
     const postUserId = props.userId
     //console.log(editedHashtags, "hashtags")
+    const [commentsVisible, setCommentsVisible] = useState(false);
+
 
     if (user.id === postUserId) {
         isUserPost = true;
@@ -159,97 +165,111 @@ export default function Post(props) {
     };
 
     return (
-        <ContainerPost data-test="post">
-            <LeftSection>
-                <PerfilImg src={props.userImg} />
-                <LikeButton />
-            </LeftSection>
-            <div>
-                <h2 data-test="username" onClick={() => navigate(`/user/${postUserId}`)}>{props.name}</h2>
-                <IconsEditTrash isUserPost={isUserPost}>
-                    {isUserPost && (
-                        <>
-                            <p data-test="edit-btn"><BsFillPencilFill className="pencil" onClick={handleEditIconClick} onMouseDown={handleEditIconMouseDown} /></p>
-                            <p data-test="delete-btn"><BiSolidTrashAlt className="trash" onClick={openDeleteModal} /></p>
-                        </>
-                    )}
-                </IconsEditTrash>
-            </div>
-
-            {isEditing ? (
-                <textarea
-                    data-test="edit-input"
-                    ref={editFieldRef}
-                    type="text"
-                    value={originalText}
-                    onChange={handleInputChange}
-                    onBlur={handleInputBlur}
-                    onKeyDown={handleKeyDown}
-                    disabled={loading}
-                />
-            ) : (
-                <p data-test="description">
-                    {originalText.split(/\s+/).map((word, index) => {
-                        if (word.startsWith('#')) {
-                            const hashtag = word.substring(1);
-                            return (
-                                <Link
-                                    to={`/hashtag/${hashtag}`}
-                                    key={index}
-                                    onClick={() => handleHashtagClick(hashtag)}
-                                    style={{
-                                        textDecoration: 'none',
-                                        color: 'inherit',
-                                        fontWeight: 'bold',
-                                    }}
-                                >
-                                    {word}{' '}
-                                </Link>
-                            );
-                        }
-                        return `${word} `;
-                    })}
-                </p>
-
-
-            )}
-            <UrlPreview
-                title={props.title}
-                metaImg={props.metaImg}
-                description={props.description}
-                postUrl={props.postUrl}
-            />
-            {isDeleteModalOpen && <BackgroundOverlay />}
-            <ReactModal
-                isOpen={isDeleteModalOpen}
-                onRequestClose={closeDeleteModal}
-                contentLabel="Confirmação de Exclusão"
-                overlayClassName="custom-overlay"
-                className="custom-content"
-            >
-                <CustomContent>
-                    <p>Are you sure you want<br />to delete this post?</p>
-                    <div>
-                        <CustomButton data-test="cancel" cancel onClick={closeDeleteModal}>No, go back</CustomButton>
-                        {loading ? "" : <CustomButton data-test="confirm" onClick={handleDeleteConfirm}>Yes, delete it</CustomButton>}
-                        {loading && (
-                            <ContainerLoading>
-                                <ReactLoading
-                                    type="spin"
-                                    color="#ffffff"
-                                    height={40}
-                                    width={40}
-                                />
-                            </ContainerLoading>
+        <>
+            <ContainerPost data-test="post">
+                <LeftSection>
+                    <PerfilImg src={props.userImg} />
+                    <LikeButton />
+                    <AiOutlineComment className="comments" onClick={() => setCommentsVisible(!commentsVisible)} />
+                    <p>0 comments</p>
+                </LeftSection>
+                <div>
+                    <h2 data-test="username" onClick={() => navigate(`/user/${postUserId}`)}>{props.name}</h2>
+                    <IconsEditTrash isUserPost={isUserPost}>
+                        {isUserPost && (
+                            <>
+                                <p data-test="edit-btn"><BsFillPencilFill className="pencil" onClick={handleEditIconClick} onMouseDown={handleEditIconMouseDown} /></p>
+                                <p data-test="delete-btn"><BiSolidTrashAlt className="trash" onClick={openDeleteModal} /></p>
+                            </>
                         )}
-                    </div>
-                </CustomContent>
-            </ReactModal>
-        </ContainerPost>
+                    </IconsEditTrash>
+                </div>
+
+                {isEditing ? (
+                    <textarea
+                        data-test="edit-input"
+                        ref={editFieldRef}
+                        type="text"
+                        value={originalText}
+                        onChange={handleInputChange}
+                        onBlur={handleInputBlur}
+                        onKeyDown={handleKeyDown}
+                        disabled={loading}
+                    />
+                ) : (
+                    <p data-test="description">
+                        {originalText.split(/\s+/).map((word, index) => {
+                            if (word.startsWith('#')) {
+                                const hashtag = word.substring(1);
+                                return (
+                                    <Link
+                                        to={`/hashtag/${hashtag}`}
+                                        key={index}
+                                        onClick={() => handleHashtagClick(hashtag)}
+                                        style={{
+                                            textDecoration: 'none',
+                                            color: 'inherit',
+                                            fontWeight: 'bold',
+                                        }}
+                                    >
+                                        {word}{' '}
+                                    </Link>
+                                );
+                            }
+                            return `${word} `;
+                        })}
+                    </p>
+
+
+                )}
+                <UrlPreview
+                    title={props.title}
+                    metaImg={props.metaImg}
+                    description={props.description}
+                    postUrl={props.postUrl}
+                />
+                {isDeleteModalOpen && <BackgroundOverlay />}
+                <ReactModal
+                    isOpen={isDeleteModalOpen}
+                    onRequestClose={closeDeleteModal}
+                    contentLabel="Confirmação de Exclusão"
+                    overlayClassName="custom-overlay"
+                    className="custom-content"
+                >
+                    <CustomContent>
+                        <p>Are you sure you want<br />to delete this post?</p>
+                        <div>
+                            <CustomButton data-test="cancel" cancel onClick={closeDeleteModal}>No, go back</CustomButton>
+                            {loading ? "" : <CustomButton data-test="confirm" onClick={handleDeleteConfirm}>Yes, delete it</CustomButton>}
+                            {loading && (
+                                <ContainerLoading>
+                                    <ReactLoading
+                                        type="spin"
+                                        color="#ffffff"
+                                        height={40}
+                                        width={40}
+                                    />
+                                </ContainerLoading>
+                            )}
+                        </div>
+                    </CustomContent>
+                </ReactModal>
+            </ContainerPost>
+            {commentsVisible && (
+                <ContainerComments>
+                    <Comment />
+                    <Comment />
+                    <Comment />
+                    <CommentField>
+                        <img src={props.userImg}/>
+                        <textarea placeholder="write a comment..."></textarea>
+                    </CommentField>
+                    <SlPaperPlane className='send'/>
+                </ContainerComments>
+            )}
+        </>
     )
 }
-
-
 
 const ContainerLikes = styled.div`
     display: flex;
@@ -272,8 +292,8 @@ const ContainerPost = styled.div`
     height: 100%;   
     width: 100%;
     background-color: #171717;
-    box-shadow: 1px 1px 4px 4px rgba(170, 170, 170, 0.212); 
-    border-radius: 10px;
+    //box-shadow: 1px 1px 4px 4px rgba(170, 170, 170, 0.212); 
+    border-radius: 16px;
     color: white;
     align-items: stretch;
     display: flex;
@@ -281,6 +301,7 @@ const ContainerPost = styled.div`
     padding: 2em;
     padding-left: 15%;
     position:relative;
+    z-index: 2;
     gap: 1em;
     div{
         display: flex;
@@ -312,10 +333,11 @@ const ContainerPost = styled.div`
 `
 
 const LeftSection = styled.section`
+    margin-left: 10px;
     position: absolute;
     left: 0;
     top: 0;
-    background-color: #333333;
+    background-color: #171717;
     height: calc(100% - 32px);
     width: 12%;
     padding-top: 2em;
@@ -325,6 +347,20 @@ const LeftSection = styled.section`
     flex-direction: column;
     align-items: center;
     gap: 1.2em;
+    .comments{
+        font-size: 25px;
+        cursor: pointer;
+    }
+    p{
+        color: #FFF;
+        text-align: center;
+        font-size: 13px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        position: relative;
+        bottom: 13px;
+    }
 `
 
 const IconsEditTrash = styled.div`
