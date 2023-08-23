@@ -6,6 +6,7 @@ import {
   Icon,
   Menu,
   LogoutOption,
+  StyledLink,
 } from "./styled";
 import { useContext, useState, useEffect, useRef } from "react";
 import { useLogout } from "../../services/auth";
@@ -39,7 +40,9 @@ export default function Header() {
 
   return (
     <Container>
-      <Title>linkr</Title>
+      <StyledLink to="/timeline">
+        <Title>linkr</Title>
+      </StyledLink>
       <SearchInput />
       <Menu data-test="menu" ref={menuRef}>
         <Icon onClick={handleIconClick}>
