@@ -24,7 +24,6 @@ const MainContent = styled.main`
   flex-direction: column;
   justify-content: center;
   margin-left: 160px;
-  margin-top: 300px;
   @media (max-width: 768px) {
     align-items: center;
     margin: 0px;

@@ -3,11 +3,11 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import Post from "../components/Post";
 import ReactLoading from "react-loading";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom"; // Removed useNavigate
 import Header from "../components/Header/Header";
-import sleep from "../components/util/sleep";
 import { simpleModal } from "../components/modais/modais";
 import Trending from "../components/Trending";
+import FollowButton from "../components/FollowButton";
 
 export default function UserMe() {
   const [userPosts, setUserPosts] = useState([]);
@@ -62,9 +62,11 @@ export default function UserMe() {
                 );
               })}
           </BodyContentLeft>
+
           <div className="trending-div">
             <Trending />
           </div>
+          <FollowButton userIdToFollow={id} />
         </BodyContent>
       ) : (
         <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
