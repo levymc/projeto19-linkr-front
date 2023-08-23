@@ -3,7 +3,7 @@ import axios from "axios";
 import AuthContext from "../context/AuthContext";
 
 export function useSearchUser() {
-  const { token } = useContext(AuthContext);
+  const { token, user } = useContext(AuthContext);
 
   const [searchResults, setSearchResults] = useState([]);
   const [notFoundError, setNotFoundError] = useState(false);
@@ -15,6 +15,9 @@ export function useSearchUser() {
         {
           headers: {
             Authorization: `Bearer ${token}`,
+          },
+          params: {
+            loggedInUserId: user.id,
           },
         }
       );
@@ -41,5 +44,31 @@ export function useSearchUser() {
     notFoundError,
     fetchSearchResults,
     clearSearchResults,
+    setSearchResults,
   };
+}
+
+export async function toggleFollow(userIdToFollow, token, user) {
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_API_URL}/toggle-follow`,
+      {
+        userIdToFollow,
+        loggedInUserId: user,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error("Error toggling follow status:", error);
+    throw error;
+  }
 }

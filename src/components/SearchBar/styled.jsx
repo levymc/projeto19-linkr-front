@@ -53,6 +53,12 @@ export const SearchContainer = styled.div`
 
   h1 {
     cursor: pointer;
+    color: #515151;
+    font-size: 19px;
+    font-family: Lato;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
   }
   @media (max-width: 650px) {
     top: 42px;
@@ -66,6 +72,25 @@ export const SearchContainer = styled.div`
     top: 82px;
     width: 100%;
     transform: translate(-50%, -50%);
+  }
+  button {
+    color: #c5c5c5;
+    font-family: Lato;
+    font-size: 19px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+    opacity: 0.5;
+    margin-left: 5px;
+  }
+  a {
+    text-decoration: none;
   }
 `;
 
@@ -119,12 +144,7 @@ export const DebouncedInput = styled.input`
   font-size: 20px;
   line-height: 24px;
   color: #707070;
-
-  :focus {
-    outline-offset: 0px !important;
-    outline: none !important;
-  }
-
+  outline: none;
   @media (max-width: 375px) {
     font-size: 17px;
     line-height: 20px;
