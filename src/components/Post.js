@@ -20,9 +20,6 @@ import Comment from './Comment';
 export default function Post(props) {
     const [originalText, setOriginalText] = useState(props.text)
     //console.log(originalText, "texto original")
-    useEffect(() => {
-        setOriginalText(props.text);
-    }, [props.text]);
     const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedText, setEditedText] = useState(props.text);
@@ -42,6 +39,10 @@ export default function Post(props) {
     //console.log(editedHashtags, "hashtags")
     const [commentsVisible, setCommentsVisible] = useState(false);
 
+    useEffect(() => {
+        setOriginalText(props.text);
+        setEditedText(props.text)
+    }, [props.text]);
 
     if (user.id === postUserId) {
         isUserPost = true;
