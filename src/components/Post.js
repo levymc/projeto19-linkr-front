@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import { SlPaperPlane } from 'react-icons/sl';
 import UrlPreview from './UrlPreview';
 import { BsFillPencilFill } from 'react-icons/bs';
 import { BiSolidTrashAlt } from 'react-icons/bi';
@@ -12,7 +13,7 @@ import AuthContext from '../context/AuthContext';
 import ReactLoading from "react-loading";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { ContainerComments } from './StyledComments';
+import { CommentField, ContainerComments } from './StyledComments';
 import Comment from './Comment';
 
 
@@ -257,6 +258,13 @@ export default function Post(props) {
             {commentsVisible && (
                 <ContainerComments>
                     <Comment />
+                    <Comment />
+                    <Comment />
+                    <CommentField>
+                        <img src={props.userImg}/>
+                        <textarea placeholder="write a comment..."></textarea>
+                    </CommentField>
+                    <SlPaperPlane className='send'/>
                 </ContainerComments>
             )}
         </>
