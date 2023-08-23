@@ -7,6 +7,7 @@ const FollowButton = ({ userIdToFollow }) => {
   console.log("userIdToFollow", userIdToFollow);
   const { token, user } = useContext(AuthContext);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (user && user.following) {
@@ -16,18 +17,22 @@ const FollowButton = ({ userIdToFollow }) => {
 
   const handleFollowToggle = async () => {
     try {
+      setIsLoading(true);
       const response = await toggleFollow(userIdToFollow, token, user.id);
       if (response) {
         setIsFollowing(!isFollowing);
       }
     } catch (error) {
       console.error("Error toggling follow status:", error);
+      window.alert("Failed to perform the operation. Please try again later.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <StyledButton onClick={handleFollowToggle}>
-      {isFollowing ? "Follow" : "Unfollow"}
+    <StyledButton onClick={handleFollowToggle} disabled={isLoading || !user}>
+      {isLoading ? "Loading..." : isFollowing ? "Unfollow" : "Follow"}
     </StyledButton>
   );
 };
