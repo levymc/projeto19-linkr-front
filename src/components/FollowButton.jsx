@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import AuthContext from "../context/AuthContext";
 import styled from "styled-components";
-import { toggleFollow } from "../services/search";
+import { toggleFollow, checkFollow } from "../services/search";
 
 const FollowButton = ({ userIdToFollow }) => {
   console.log("userIdToFollow", userIdToFollow);
@@ -10,10 +10,23 @@ const FollowButton = ({ userIdToFollow }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (user && user.following) {
-      setIsFollowing(user.following.includes(userIdToFollow));
-    }
-  }, [user, userIdToFollow]);
+    const fetchFollowStatus = async () => {
+      if (user && user.id) {
+        try {
+          const followStatus = await checkFollow(
+            userIdToFollow,
+            user.id,
+            token
+          );
+          setIsFollowing(followStatus);
+        } catch (error) {
+          console.error("Error fetching follow status:", error);
+        }
+      }
+    };
+
+    fetchFollowStatus();
+  }, [userIdToFollow, user, token]);
 
   const handleFollowToggle = async () => {
     try {

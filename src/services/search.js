@@ -72,3 +72,23 @@ export async function toggleFollow(userIdToFollow, token, user) {
     throw error;
   }
 }
+
+export async function checkFollow(userId, loggedInUserId, token) {
+  try {
+    const response = await axios.get(
+      `${process.env.REACT_APP_API_URL}/check-follow/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          loggedInUserId: loggedInUserId,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error checking follow status:", error);
+    throw error;
+  }
+}
