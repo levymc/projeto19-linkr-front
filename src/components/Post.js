@@ -213,6 +213,7 @@ export default function Post(props) {
                                 return (
                                     <Link
                                         to={`/hashtag/${hashtag}`}
+                                        data-test="description"
                                         key={index}
                                         onClick={() => handleHashtagClick(hashtag)}
                                         style={{
