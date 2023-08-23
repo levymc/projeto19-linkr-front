@@ -78,9 +78,9 @@ export default function SearchInput() {
         usersWithoutisFollowingTrue.length > 0) && (
         <SearchContainer id="search-container">
           {usersWithisFollowingTrue.map((user) => (
-            <UserBox data-test="user-search" key={user.userId}>
+            <UserBox key={user.userId}>
               <img src={user.imageUrl} alt="" />
-              <Link to={`/user/${user.userId}`}>
+              <Link data-test="user-search" to={`/user/${user.userId}`}>
                 <h1>{user.name}</h1>
               </Link>
               <button onClick={() => handleFollowClick(user.userId)}>
@@ -89,9 +89,9 @@ export default function SearchInput() {
             </UserBox>
           ))}
           {usersWithoutisFollowingTrue.map((user) => (
-            <UserBox data-test="user-search" key={user.userId}>
+            <UserBox  key={user.userId}>
               <img src={user.imageUrl} alt="" />
-              <Link to={`/user/${user.userId}`}>
+              <Link data-test="user-search" to={`/user/${user.userId}`}>
                 <h1>{user.name}</h1>
               </Link>
               <button onClick={() => handleFollowClick(user.userId)}>
