@@ -19,10 +19,6 @@ import Comment from './Comment';
 
 export default function Post(props) {
     const [originalText, setOriginalText] = useState(props.text)
-    //console.log(originalText, "texto original")
-    useEffect(() => {
-        setOriginalText(props.text);
-    }, [props.text]);
     const [loading, setLoading] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
     const [editedText, setEditedText] = useState(props.text);
@@ -39,9 +35,16 @@ export default function Post(props) {
     const navigate = useNavigate()
     const { user } = useContext(AuthContext);
     const postUserId = props.userId
-    //console.log(editedHashtags, "hashtags")
     const [commentsVisible, setCommentsVisible] = useState(false);
 
+    //comments 
+    const [commentInput, setCommentInput] = useState("");
+
+
+    useEffect(() => {
+        setOriginalText(props.text);
+        setEditedText(props.text)
+    }, [props.text]);
 
     if (user.id === postUserId) {
         isUserPost = true;
@@ -164,6 +167,12 @@ export default function Post(props) {
         navigate(`/hashtag/${hashtag}`);
     };
 
+    const handleTextAreaChange = (event) => {
+        const value = event.target.value;
+        setCommentInput(value);
+        console.log(value)
+    };
+
     return (
         <>
             <ContainerPost data-test="post">
@@ -261,8 +270,12 @@ export default function Post(props) {
                     <Comment />
                     <Comment />
                     <CommentField>
-                        <img src={props.userImg}/>
-                        <textarea placeholder="write a comment..."></textarea>
+                        <img src={user.imageUrl}/>
+                        <textarea 
+                        placeholder="write a comment..."
+                        value={commentInput}
+                        onChange={handleTextAreaChange}
+                        />
                     </CommentField>
                     <SlPaperPlane className='send'/>
                 </ContainerComments>
