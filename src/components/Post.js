@@ -194,6 +194,7 @@ export default function Post(props) {
                             const hashtag = word.substring(1);
                             return (
                                 <Link
+                                    data-test="description"
                                     to={`/hashtag/${hashtag}`}
                                     key={index}
                                     onClick={() => handleHashtagClick(hashtag)}
