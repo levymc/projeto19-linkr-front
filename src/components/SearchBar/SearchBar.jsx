@@ -84,12 +84,12 @@ export default function SearchInput() {
                 <h1>{user.name}</h1>
               </Link>
               <button onClick={() => handleFollowClick(user.userId)}>
-                • following
+                following
               </button>
             </UserBox>
           ))}
           {usersWithoutisFollowingTrue.map((user) => (
-            <UserBox  key={user.userId}>
+            <UserBox key={user.userId}>
               <img src={user.imageUrl} alt="" />
               <Link data-test="user-search" to={`/user/${user.userId}`}>
                 <h1>{user.name}</h1>

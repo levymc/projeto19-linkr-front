@@ -33,11 +33,10 @@ const FollowButton = ({ userIdToFollow }) => {
       setIsLoading(true);
       const response = await toggleFollow(userIdToFollow, token, user.id);
       if (response) {
-        setIsFollowing(!isFollowing);
+        setIsFollowing((prevIsFollowing) => !prevIsFollowing);
       }
     } catch (error) {
       console.error("Error toggling follow status:", error);
-      window.alert("Failed to perform the operation. Please try again later.");
     } finally {
       setIsLoading(false);
     }
