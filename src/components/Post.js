@@ -335,7 +335,7 @@ export default function Post(props) {
                     ) : (
                         <>
                             {comments.map((comment, index) => (
-                                <Comment key={index} info={comment} userId={postUserId}/>
+                                <div className='comment' data-test="comment"><Comment key={index} info={comment} userId={postUserId}/></div>
                             ))}
                             <CommentField>
                                 <img src={user.imageUrl} />
