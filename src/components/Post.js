@@ -36,8 +36,6 @@ export default function Post(props) {
     const { user } = useContext(AuthContext);
     const postUserId = props.userId
     const [commentsVisible, setCommentsVisible] = useState(false);
-
-    //comments 
     const [commentInput, setCommentInput] = useState("");
     const [commentCount, setCommentCount] = useState(0);
 
@@ -52,9 +50,7 @@ export default function Post(props) {
       
       useEffect(() => {
         fetchCommentCount();
-      }, []);
-
-    /////////////////////////////////////////////////////////      
+      }, []);    
 
     useEffect(() => {
         setOriginalText(props.text);
@@ -188,6 +184,24 @@ export default function Post(props) {
         console.log(value)
     };
 
+    const handleSendComment = async () => {
+        if (commentInput.trim() === '') {
+            return; 
+        }
+        try {
+            await axios.post(`${process.env.REACT_APP_API_URL}/comments`, {
+                postId: props.postId,
+                userId: user.id, 
+                comment: commentInput
+            });
+            setCommentInput('');
+            fetchCommentCount();
+        } catch (error) {
+            console.error('Erro ao enviar o comentário', error);
+            alert('Erro ao enviar o comentário');
+        }
+    };
+
     return (
         <>
             <ContainerPost data-test="post" onClick = {() => console.log(props.postUrl)} >
@@ -293,7 +307,7 @@ export default function Post(props) {
                         onChange={handleTextAreaChange}
                         />
                     </CommentField>
-                    <SlPaperPlane className='send'/>
+                    <SlPaperPlane className="send" onClick={handleSendComment} />
                 </ContainerComments>
             )}
         </>
