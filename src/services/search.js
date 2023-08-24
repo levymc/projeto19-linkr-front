@@ -68,8 +68,8 @@ export async function toggleFollow(userIdToFollow, token, user) {
       return false;
     }
   } catch (error) {
-    console.error("Error toggling follow status:", error);
     window.alert("Failed to perform the operation. Please try again later.");
+    console.error("Error toggling follow status:", error);
     throw error;
   }
 }
@@ -89,9 +89,8 @@ export async function checkFollow(userId, loggedInUserId, token) {
     );
     return response.data;
   } catch (error) {
-    console.error("Error checking follow status:", error);
     window.alert("Failed to perform the operation. Please try again later.");
-
+    console.error("Error checking follow status:", error);
     throw error;
   }
 }

@@ -20,6 +20,10 @@ const FollowButton = ({ userIdToFollow }) => {
           );
           setIsFollowing(followStatus);
         } catch (error) {
+          window.alert(
+            "Failed to perform the operation. Please try again later."
+          );
+
           console.error("Error fetching follow status:", error);
         }
       }
@@ -36,6 +40,7 @@ const FollowButton = ({ userIdToFollow }) => {
         setIsFollowing((prevIsFollowing) => !prevIsFollowing);
       }
     } catch (error) {
+      window.alert("Failed to perform the operation. Please try again later.");
       console.error("Error toggling follow status:", error);
     } finally {
       setIsLoading(false);
