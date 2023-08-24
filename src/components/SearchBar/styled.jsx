@@ -73,7 +73,8 @@ export const SearchContainer = styled.div`
     width: 100%;
     transform: translate(-50%, -50%);
   }
-  button {
+  button,
+  h2 {
     color: #c5c5c5;
     font-family: Lato;
     font-size: 19px;
@@ -91,6 +92,9 @@ export const SearchContainer = styled.div`
   }
   a {
     text-decoration: none;
+  }
+  h2 {
+    cursor: text;
   }
 `;
 

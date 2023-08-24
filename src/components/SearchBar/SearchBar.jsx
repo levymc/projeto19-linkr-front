@@ -57,8 +57,6 @@ export default function SearchInput() {
     }
   };
 
-  console.log(searchResults);
-
   return (
     <Container>
       <InputBox>
@@ -84,9 +82,9 @@ export default function SearchInput() {
               <Link data-test="user-search" to={`/user/${user.userId}`}>
                 <h1>{user.name}</h1>
               </Link>
-              <button onClick={() => handleFollowClick(user.userId)}>
-                <h1>following</h1>
-              </button>
+              {/* <button onClick={() => handleFollowClick(user.userId)}> */}
+              <h2>{user.isFollowing ? "following" : "follow"}</h2>
+              {/* </button> */}
             </UserBox>
           ))}
           {usersWithoutisFollowingTrue.map((user) => (
@@ -95,9 +93,9 @@ export default function SearchInput() {
               <Link data-test="user-search" to={`/user/${user.userId}`}>
                 <h1>{user.name}</h1>
               </Link>
-              <button onClick={() => handleFollowClick(user.userId)}>
-                <h1>follow</h1>
-              </button>
+              {/* <button onClick={() => handleFollowClick(user.userId)}> */}
+              <h2>{user.isFollowing ? "following" : "follow"}</h2>
+              {/* </button> */}
             </UserBox>
           ))}
         </SearchContainer>
