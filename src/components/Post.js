@@ -36,10 +36,10 @@ export default function Post(props) {
     const { user } = useContext(AuthContext);
     const postUserId = props.userId
     const [commentsVisible, setCommentsVisible] = useState(false);
-
-    //comments 
     const [commentInput, setCommentInput] = useState("");
     const [commentCount, setCommentCount] = useState(0);
+    const [comments, setComments] = useState([]);
+    const [loadingComments, setLoadingComments] = useState(false);
 
     const fetchCommentCount = async () => {
         try {
@@ -52,9 +52,7 @@ export default function Post(props) {
       
       useEffect(() => {
         fetchCommentCount();
-      }, []);
-
-    /////////////////////////////////////////////////////////      
+      }, []);    
 
     useEffect(() => {
         setOriginalText(props.text);
@@ -188,13 +186,50 @@ export default function Post(props) {
         console.log(value)
     };
 
+    const handleSendComment = async () => {
+        if (commentInput.trim() === '') {
+            return; 
+        }
+        try {
+            await axios.post(`${process.env.REACT_APP_API_URL}/comments`, {
+                postId: props.postId,
+                userId: user.id, 
+                comment: commentInput
+            });
+            setCommentInput('');
+            fetchCommentCount();
+            fetchComments();
+        } catch (error) {
+            console.error('Erro ao enviar o comentário', error);
+            alert('Erro ao enviar o comentário');
+        }
+    };
+
+    const fetchComments = async () => {
+        setLoadingComments(true);
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/comments/${props.postId}`);
+            setComments(response.data); // Assumindo que a resposta contém um array de comentários
+        } catch (error) {
+            console.error('Erro ao obter os comentários', error);
+        }
+        setLoadingComments(false);
+    };
+
+    const handleCommentsIconClick = () => {
+        setCommentsVisible(!commentsVisible);
+        if (!commentsVisible) {
+            fetchComments(); // Chama a função para buscar os comentários ao abrir a janela
+        }
+    };
+
     return (
         <>
             <ContainerPost data-test="post" onClick = {() => console.log(props.postUrl)} >
                 <LeftSection>
                     <PerfilImg src={props.userImg} />
                     <LikeButton />
-                    <AiOutlineComment className="comments" onClick={() => setCommentsVisible(!commentsVisible)} />
+                    <AiOutlineComment className="comments" onClick={handleCommentsIconClick} />
                     <p>{commentCount} comments</p>
                 </LeftSection>
                 <div>
@@ -282,18 +317,24 @@ export default function Post(props) {
             </ContainerPost>
             {commentsVisible && (
                 <ContainerComments>
-                    <Comment />
-                    <Comment />
-                    <Comment />
-                    <CommentField>
-                        <img src={user.imageUrl}/>
-                        <textarea 
-                        placeholder="write a comment..."
-                        value={commentInput}
-                        onChange={handleTextAreaChange}
-                        />
-                    </CommentField>
-                    <SlPaperPlane className='send'/>
+                    {loadingComments ? (
+                        <p>Loading comments...</p>
+                    ) : (
+                        <>
+                            {comments.map((comment, index) => (
+                                <Comment key={index} info={comment} /> // Substitua "Comment" pela sua lógica de renderização de comentário
+                            ))}
+                            <CommentField>
+                                <img src={user.imageUrl} />
+                                <textarea
+                                    placeholder="write a comment..."
+                                    value={commentInput}
+                                    onChange={handleTextAreaChange}
+                                />
+                            </CommentField>
+                            <SlPaperPlane className="send" onClick={handleSendComment} />
+                        </>
+                    )}
                 </ContainerComments>
             )}
         </>
