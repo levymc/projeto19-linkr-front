@@ -40,6 +40,7 @@ textarea::placeholder {
     position: relative;
     bottom: 55px;
     left: 335px;
+    cursor: pointer;
 }
 `
 
@@ -89,6 +90,11 @@ li::before {
     margin-right: 5px; 
     position: absolute;
     left: -12px; 
+}
+
+span{
+    color: #565656;
+    margin-left: 5px;
 }
 `
 
