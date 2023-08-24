@@ -190,7 +190,7 @@ export default function Post(props) {
 
     return (
         <>
-            <ContainerPost data-test="post">
+            <ContainerPost data-test="post"onClick = {() => console.log(props.postUrl)} >
                 <LeftSection>
                     <PerfilImg src={props.userImg} />
                     <LikeButton />
