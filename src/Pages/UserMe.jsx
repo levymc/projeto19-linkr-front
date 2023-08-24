@@ -66,7 +66,7 @@ export default function UserMe() {
           <div className="trending-div">
             <Trending />
           </div>
-          <FollowButton userIdToFollow={id} />
+          <FollowButton data-test="follow-btn" userIdToFollow={id} />
         </BodyContent>
       ) : (
         <ReactLoading type={"spin"} color={"white"} height={667} width={375} />
