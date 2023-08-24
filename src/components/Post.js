@@ -209,7 +209,7 @@ export default function Post(props) {
         setLoadingComments(true);
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/comments/${props.postId}`);
-            setComments(response.data); // Assumindo que a resposta contém um array de comentários
+            setComments(response.data); 
         } catch (error) {
             console.error('Erro ao obter os comentários', error);
         }
@@ -219,7 +219,7 @@ export default function Post(props) {
     const handleCommentsIconClick = () => {
         setCommentsVisible(!commentsVisible);
         if (!commentsVisible) {
-            fetchComments(); // Chama a função para buscar os comentários ao abrir a janela
+            fetchComments(); 
         }
     };
 
@@ -322,7 +322,7 @@ export default function Post(props) {
                     ) : (
                         <>
                             {comments.map((comment, index) => (
-                                <Comment key={index} info={comment} /> // Substitua "Comment" pela sua lógica de renderização de comentário
+                                <Comment key={index} info={comment} userId={user.id}/> 
                             ))}
                             <CommentField>
                                 <img src={user.imageUrl} />
