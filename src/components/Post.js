@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { SlPaperPlane } from 'react-icons/sl';
 import UrlPreview from './UrlPreview';
 import { BsFillPencilFill } from 'react-icons/bs';
@@ -13,7 +14,7 @@ import ReactLoading from "react-loading";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { CommentField, ContainerComments } from './StyledComments';
-import Comment from './Comment';
+import Comment from './Comment';    
 
 
 export default function Post(props) {
@@ -52,6 +53,11 @@ export default function Post(props) {
       useEffect(() => {
         fetchCommentCount();
       }, []);    
+
+      useEffect(() => {
+        fetchCommentCount();
+        fetchComments();
+    }, [props.postId, commentCount]); 
 
     useEffect(() => {
         setOriginalText(props.text);
@@ -93,6 +99,8 @@ export default function Post(props) {
             closeDeleteModal();
             alert("Error to delete post");
         }
+        fetchCommentCount();
+        fetchComments();
     };
 
     const handleEditIconClick = () => {
@@ -183,6 +191,11 @@ export default function Post(props) {
         const value = event.target.value;
         setCommentInput(value);
         console.log(value)
+
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault(); 
+            handleSendComment(); 
+        }
     };
 
     const handleSendComment = async () => {
@@ -196,8 +209,8 @@ export default function Post(props) {
                 comment: commentInput
             });
             setCommentInput('');
-            fetchCommentCount();
             fetchComments();
+            fetchCommentCount();
         } catch (error) {
             console.error('Erro ao enviar o comentário', error);
             alert('Erro ao enviar o comentário');
@@ -221,6 +234,7 @@ export default function Post(props) {
             fetchComments(); 
         }
     };
+    
 
     return (
         <>
@@ -228,8 +242,8 @@ export default function Post(props) {
                 <LeftSection>
                     <PerfilImg src={props.userImg} />
                     <LikeButton />
-                    <AiOutlineComment className="comments" onClick={handleCommentsIconClick} />
-                    <p>{commentCount} comments</p>
+                    <span data-test="comment-btn"><AiOutlineComment className="comments" onClick={handleCommentsIconClick} /></span>
+                    <p data-test="comment-counter">{commentCount} comments</p>
                 </LeftSection>
                 <div>
                     <h2 data-test="username" onClick={() => navigate(`/user/${postUserId}`)}>{props.name}</h2>
@@ -315,23 +329,25 @@ export default function Post(props) {
                 </ReactModal>
             </ContainerPost>
             {commentsVisible && (
-                <ContainerComments>
+                <ContainerComments data-test="comment-box">
                     {loadingComments ? (
                         <p>Loading comments...</p>
                     ) : (
                         <>
                             {comments.map((comment, index) => (
-                                <Comment key={index} info={comment} userId={user.id}/> 
+                                <Comment key={index} info={comment} userId={postUserId}/>
                             ))}
                             <CommentField>
                                 <img src={user.imageUrl} />
                                 <textarea
+                                    data-test="comment-input"
                                     placeholder="write a comment..."
                                     value={commentInput}
                                     onChange={handleTextAreaChange}
+                                    onKeyDown={handleTextAreaChange}
                                 />
                             </CommentField>
-                            <SlPaperPlane className="send" onClick={handleSendComment} />
+                            <span data-test="comment-submit"><SlPaperPlane className="send" onClick={handleSendComment} /></span>
                         </>
                     )}
                 </ContainerComments>
