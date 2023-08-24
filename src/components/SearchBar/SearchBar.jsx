@@ -52,6 +52,7 @@ export default function SearchInput() {
       setSearchResults(updatedResults);
       await toggleFollow(userId, token, user.id);
     } catch (error) {
+      window.alert("Failed to perform the operation. Please try again later.");
       console.error("Error toggling follow status:", error);
     }
   };
@@ -84,7 +85,7 @@ export default function SearchInput() {
                 <h1>{user.name}</h1>
               </Link>
               <button onClick={() => handleFollowClick(user.userId)}>
-                following
+                <h1>following</h1>
               </button>
             </UserBox>
           ))}
@@ -95,7 +96,7 @@ export default function SearchInput() {
                 <h1>{user.name}</h1>
               </Link>
               <button onClick={() => handleFollowClick(user.userId)}>
-                follow
+                <h1>follow</h1>
               </button>
             </UserBox>
           ))}
