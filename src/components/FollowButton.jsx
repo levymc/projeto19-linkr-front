@@ -44,7 +44,11 @@ const FollowButton = ({ userIdToFollow }) => {
   };
 
   return (
-    <StyledButton onClick={handleFollowToggle} disabled={isLoading || !user}>
+    <StyledButton
+      onClick={handleFollowToggle}
+      disabled={isLoading || !user}
+      data-test="follow-btn"
+    >
       {isLoading ? "Loading..." : isFollowing ? "Unfollow" : "Follow"}
     </StyledButton>
   );
