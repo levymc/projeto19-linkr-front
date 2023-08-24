@@ -1,6 +1,4 @@
-import styled from 'styled-components'
 import { CommentInfo, ContainerComment } from './StyledComments'
-import { GiPlainCircle } from 'react-icons/gi';
 import { useContext, useEffect, useState } from 'react';
 import AuthContext from '../context/AuthContext';
 import { checkFollow } from '../services/search';

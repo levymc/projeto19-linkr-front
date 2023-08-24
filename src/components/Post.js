@@ -1,6 +1,5 @@
 import styled from 'styled-components'
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { SlPaperPlane } from 'react-icons/sl';
 import UrlPreview from './UrlPreview';
 import { BsFillPencilFill } from 'react-icons/bs';
