@@ -51,7 +51,7 @@ export function useSearchUser() {
 export async function toggleFollow(userIdToFollow, token, user) {
   try {
     const response = await axios.post(
-      `${process.env.REACT_APP_API_URL}/toggle-follow`,
+      `${process.env.REACT_APP_API_URL}/follow`,
       {
         userIdToFollow,
         loggedInUserId: user,
