@@ -6,7 +6,7 @@ import LoopIcon from '@mui/icons-material/Loop';
 export default function RepostButton({ postId, respostAmount }) {
 
     const [reposted, setResposted] = useState(false);
-    const [repostNumber, setRepostNumber] = useState(respostAmount);
+    const [repostNumber, setRepostNumber] = useState(parseInt(respostAmount));
 
     const handleRepost = async () => {
 
