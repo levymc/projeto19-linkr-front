@@ -113,6 +113,8 @@ export default function HomePage() {
                     userId={post.userId}
                     cont={cont}
                     setCont={setCont}
+                    // repost stuff :
+                    repostCount={post.repostCount} reposterId={post.reposterId} reposterName={post.reposterName}
                   />
                 );
               })

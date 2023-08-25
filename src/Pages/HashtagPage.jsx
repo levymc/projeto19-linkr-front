@@ -56,7 +56,7 @@ export default function HashtagPage() {
                         })}
                     </BodyContentLeft>
                     <div className="trending-div">
-                        <Trending />
+                        <Trending postsInfos={postsInfos} />
                     </div>
                 </BodyContent>
             ) : (
