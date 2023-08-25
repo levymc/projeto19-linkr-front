@@ -81,9 +81,9 @@ export default function SearchInput() {
               <img src={user.imageUrl} alt="" />
               <Link data-test="user-search" to={`/user/${user.userId}`}>
                 <h1>{user.name}</h1>
+                <h2>{user.isFollowing ? "following" : "follow"}</h2>
               </Link>
               {/* <button onClick={() => handleFollowClick(user.userId)}> */}
-              <h2>{user.isFollowing ? "following" : "follow"}</h2>
               {/* </button> */}
             </UserBox>
           ))}
@@ -92,9 +92,9 @@ export default function SearchInput() {
               <img src={user.imageUrl} alt="" />
               <Link data-test="user-search" to={`/user/${user.userId}`}>
                 <h1>{user.name}</h1>
+                <h2>{user.isFollowing ? "following" : "follow"}</h2>
               </Link>
               {/* <button onClick={() => handleFollowClick(user.userId)}> */}
-              <h2>{user.isFollowing ? "following" : "follow"}</h2>
               {/* </button> */}
             </UserBox>
           ))}
