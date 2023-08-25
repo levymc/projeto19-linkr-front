@@ -117,7 +117,9 @@ export default function HomePage() {
                 );
               })
             ) : (
-              <span data-test="message">There are no posts yet</span>
+              <span data-test="message">
+                You don't follow anyone yet. Search for new friends!
+              </span>
             )}
             <Sentinela id="sentinela">
               {postsInfos.posts.length === newLimit ? (
