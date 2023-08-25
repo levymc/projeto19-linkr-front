@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Container = styled.div`
   position: relative;
@@ -28,6 +29,38 @@ export const Container = styled.div`
     width: 89%;
     transform: translate(-50%, -50%);
     margin-top: 43px;
+  }
+`;
+
+export const UserLink = styled(Link)`
+  text-decoration: none;
+  color: #707070;
+  font-weight: 500;
+  transition: color 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+
+  img {
+    border-radius: 50%;
+    object-fit: cover;
+    width: 39px;
+    height: 39px;
+    margin-right: 15px;
+  }
+
+  h1 {
+    font-family: "Lato";
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #707070;
+    margin-right: 10px;
+  }
+
+  .follow-btn {
+    display: flex;
+    align-items: center;
   }
 `;
 
@@ -91,6 +124,26 @@ export const SearchContainer = styled.div`
   }
   a {
     text-decoration: none;
+  }
+  h2 {
+    cursor: text;
+  }
+  .follow-btn {
+    display: flex;
+    color: #c5c5c5;
+    font-family: Lato;
+    font-size: 19px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+    opacity: 0.5;
+    margin-left: 5px;
   }
 `;
 

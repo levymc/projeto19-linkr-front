@@ -42,10 +42,13 @@ textarea::placeholder {
     left: 335px;
     cursor: pointer;
 }
+.comment{
+    width: calc(100% - 50px);
+    border-top: 1px solid #353535;
+}
 `
 
 export const ContainerComment = styled.div`
-    border-top: 1px solid #353535;
     display: flex;
     align-items: flex-start;
     padding: 17px 0;

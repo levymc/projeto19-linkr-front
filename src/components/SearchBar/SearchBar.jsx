@@ -3,8 +3,6 @@ import { DebounceInput } from "react-debounce-input";
 import { useSearchUser, toggleFollow } from "../../services/search";
 import { AiOutlineSearch } from "react-icons/ai";
 import AuthContext from "../../context/AuthContext";
-import { Link } from "react-router-dom"; // Import Link component
-
 import {
   Container,
   InputBox,
@@ -12,6 +10,7 @@ import {
   OutlineIcon,
   UserBox,
   DebouncedInput,
+  UserLink,
 } from "./styled";
 
 export default function SearchInput() {
@@ -52,11 +51,10 @@ export default function SearchInput() {
       setSearchResults(updatedResults);
       await toggleFollow(userId, token, user.id);
     } catch (error) {
+      window.alert("Failed to perform the operation. Please try again later.");
       console.error("Error toggling follow status:", error);
     }
   };
-
-  console.log(searchResults);
 
   return (
     <Container>
@@ -80,23 +78,23 @@ export default function SearchInput() {
           {usersWithisFollowingTrue.map((user) => (
             <UserBox key={user.userId}>
               <img src={user.imageUrl} alt="" />
-              <Link data-test="user-search" to={`/user/${user.userId}`}>
+              <UserLink data-test="user-search" to={`/user/${user.userId}`}>
                 <h1>{user.name}</h1>
-              </Link>
-              <button onClick={() => handleFollowClick(user.userId)}>
-                following
-              </button>
+                <div className="follow-btn">
+                  <h2>{user.isFollowing ? "following" : "follow"}</h2>
+                </div>
+              </UserLink>
             </UserBox>
           ))}
           {usersWithoutisFollowingTrue.map((user) => (
             <UserBox key={user.userId}>
               <img src={user.imageUrl} alt="" />
-              <Link data-test="user-search" to={`/user/${user.userId}`}>
+              <UserLink data-test="user-search" to={`/user/${user.userId}`}>
                 <h1>{user.name}</h1>
-              </Link>
-              <button onClick={() => handleFollowClick(user.userId)}>
-                follow
-              </button>
+                <div className="follow-btn">
+                  <h2>{user.isFollowing ? "following" : "follow"}</h2>
+                </div>
+              </UserLink>
             </UserBox>
           ))}
         </SearchContainer>
