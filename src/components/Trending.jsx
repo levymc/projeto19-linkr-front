@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { styled } from "styled-components";
 
-export default function Trending() {
+export default function Trending(postsInfos) {
 
     const [hashtags, setHasgtags] = useState([]);
 
@@ -11,7 +11,7 @@ export default function Trending() {
         axios.get(`${process.env.REACT_APP_API_URL}/hashtag`)
             .then((res) => { setHasgtags(res.data) })
             .catch((err) => { console.error(err) });
-    }, [])
+    }, [postsInfos])
 
     return (
         <TrendingBox data-test="trending">

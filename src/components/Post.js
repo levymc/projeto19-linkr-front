@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { CommentField, ContainerComments } from './StyledComments';
 import Comment from './Comment';    
+import RepostButton from './RepostButton';
 
 
 export default function Post(props) {
@@ -244,6 +245,8 @@ export default function Post(props) {
                     <LikeButton />
                     <span data-test="comment-btn"><AiOutlineComment className="comments" onClick={handleCommentsIconClick} /></span>
                     <p data-test="comment-counter">{commentCount} comments</p>
+                    {/* <RepostButton postId={props.postId} respostAmount={0} /> */}
+                    {/* eu colocaria no respostAmount o valor recebido pelo back, mas falta implementar a timeline de following */}
                 </LeftSection>
                 <div>
                     <h2 data-test="username" onClick={() => navigate(`/user/${postUserId}`)}>{props.name}</h2>
