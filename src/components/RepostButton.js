@@ -4,6 +4,7 @@ import styled from "styled-components";
 import LoopIcon from '@mui/icons-material/Loop';
 
 export default function RepostButton({ postId, respostAmount }) {
+
     const [reposted, setResposted] = useState(false);
     const [repostNumber, setRepostNumber] = useState(respostAmount);
 
@@ -29,21 +30,21 @@ export default function RepostButton({ postId, respostAmount }) {
     return (
 
         <ContainerRespost onClick={() => handleRepost()}>
-            <LoopIcon />
-            <span>{repostNumber} likes</span>
+            <LoopIcon data-test="repost-btn" />
+            <span data-test="repost-counter">{repostNumber} re-post</span>
         </ContainerRespost>
 
     );
 };
 
 const ContainerRespost = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.3em;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  span {
-    font-size: 13px;
-  }
+    display: flex;
+    flex-direction: column;
+    gap: 0.3em;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    span {
+        font-size: 13px;
+    }
 `;

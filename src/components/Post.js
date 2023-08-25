@@ -14,7 +14,7 @@ import ReactLoading from "react-loading";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { CommentField, ContainerComments } from './StyledComments';
-import Comment from './Comment';    
+import Comment from './Comment';
 import RepostButton from './RepostButton';
 
 
@@ -44,21 +44,21 @@ export default function Post(props) {
 
     const fetchCommentCount = async () => {
         try {
-          const response = await axios.get(`${process.env.REACT_APP_API_URL}/numberComments/${props.postId}`);
-          setCommentCount(parseInt(response.data.commentcount));
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/numberComments/${props.postId}`);
+            setCommentCount(parseInt(response.data.commentcount));
         } catch (error) {
-          console.error("Erro ao obter contador de comentários", error);
+            console.error("Erro ao obter contador de comentários", error);
         }
-      };
-      
-      useEffect(() => {
-        fetchCommentCount();
-      }, []);    
+    };
 
-      useEffect(() => {
+    useEffect(() => {
+        fetchCommentCount();
+    }, []);
+
+    useEffect(() => {
         fetchCommentCount();
         fetchComments();
-    }, [props.postId, commentCount]); 
+    }, [props.postId, commentCount]);
 
     useEffect(() => {
         setOriginalText(props.text);
@@ -194,19 +194,19 @@ export default function Post(props) {
         console.log(value)
 
         if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault(); 
-            handleSendComment(); 
+            event.preventDefault();
+            handleSendComment();
         }
     };
 
     const handleSendComment = async () => {
         if (commentInput.trim() === '') {
-            return; 
+            return;
         }
         try {
             await axios.post(`${process.env.REACT_APP_API_URL}/comments`, {
                 postId: props.postId,
-                userId: user.id, 
+                userId: user.id,
                 comment: commentInput
             });
             setCommentInput('');
@@ -222,7 +222,7 @@ export default function Post(props) {
         setLoadingComments(true);
         try {
             const response = await axios.get(`${process.env.REACT_APP_API_URL}/comments/${props.postId}`);
-            setComments(response.data); 
+            setComments(response.data);
         } catch (error) {
             console.error('Erro ao obter os comentários', error);
         }
@@ -232,21 +232,23 @@ export default function Post(props) {
     const handleCommentsIconClick = () => {
         setCommentsVisible(!commentsVisible);
         if (!commentsVisible) {
-            fetchComments(); 
+            fetchComments();
         }
     };
-    
+
 
     return (
         <>
-            <ContainerPost data-test="post" onClick = {() => console.log(props.postUrl)} >
+            {props.reposterId ?
+                <RepostContainer>Re-posted by {props.reposterName}</RepostContainer> : <></>
+            }
+            <ContainerPost data-test="post" onClick={() => console.log(props.postUrl)} >
                 <LeftSection>
                     <PerfilImg src={props.userImg} />
                     <LikeButton />
                     <span data-test="comment-btn"><AiOutlineComment className="comments" onClick={handleCommentsIconClick} /></span>
                     <p data-test="comment-counter">{commentCount} comments</p>
-                    {/* <RepostButton postId={props.postId} respostAmount={0} /> */}
-                    {/* eu colocaria no respostAmount o valor recebido pelo back, mas falta implementar a timeline de following */}
+                    <RepostButton postId={props.postId} respostAmount={props.repostCount} />
                 </LeftSection>
                 <div>
                     <h2 data-test="username" onClick={() => navigate(`/user/${postUserId}`)}>{props.name}</h2>
@@ -338,7 +340,7 @@ export default function Post(props) {
                     ) : (
                         <>
                             {comments.map((comment, index) => (
-                                <div className='comment'><Comment key={index} info={comment} userId={postUserId}/></div>
+                                <div className='comment'><Comment key={index} info={comment} userId={postUserId} /></div>
                             ))}
                             <CommentField>
                                 <img src={user.imageUrl} />
@@ -525,4 +527,17 @@ const ContainerLoading = styled.div`
     height: 37px;
     margin: 13px;
     margin-top: 38px;
+`
+
+const RepostContainer = styled.div`
+
+    height: 13px;
+    margin: 0;
+
+    font-family: Lato;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: left;
+    color: white;
+
 `
