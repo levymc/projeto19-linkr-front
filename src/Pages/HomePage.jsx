@@ -52,7 +52,7 @@ export default function HomePage() {
       })
       .catch((error) => {
         console.error("Erro ao obter os postInfo:", error);
-        simpleModal("Erro ao obter os postInfo: " + error, "error");
+        alert("Erro ao obter os posts: " + error);
       });
   };
   useEffect(() => {
@@ -117,9 +117,7 @@ export default function HomePage() {
                 );
               })
             ) : (
-              <span data-test="message">
-                You don't follow anyone yet. Search for new friends!
-              </span>
+              <span data-test="message">No posts found from vour friends</span>
             )}
             <Sentinela id="sentinela">
               {postsInfos.posts.length === newLimit ? (
