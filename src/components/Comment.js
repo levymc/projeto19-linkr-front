@@ -34,7 +34,7 @@ export default function Comment(props) {
     }, [props.info.userId, props.userId]);
 
     return (
-        <ContainerComment>
+        <ContainerComment data-test="comment">
             <img src={props.info.imageUrl} alt={props.info.name} />
             <div>
                 <CommentInfo>
