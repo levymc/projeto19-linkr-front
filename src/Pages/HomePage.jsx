@@ -40,6 +40,7 @@ export default function HomePage() {
       })
       .catch((error) => {
         console.error("Error getting posts:", error);
+        alert("Erro ao obter os postInfo: " + error, "error");
       });
   };
 
