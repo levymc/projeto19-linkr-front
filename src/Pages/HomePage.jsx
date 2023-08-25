@@ -97,7 +97,7 @@ export default function HomePage() {
               </BtnNewPosts>
             )}
             {postsInfos.posts.length > 0 ? (
-              postsInfos.posts.map((post, i) => {
+              postsInfos.posts.slice(-10).map((post, i) => {
                 return (
                   <Post
                     key={i}
@@ -117,7 +117,7 @@ export default function HomePage() {
                 );
               })
             ) : (
-              <span data-test="message">No posts found from vour friends</span>
+              <span data-test="message">No posts found from your friends</span>
             )}
             <Sentinela id="sentinela">
               {postsInfos.posts.length === newLimit ? (
