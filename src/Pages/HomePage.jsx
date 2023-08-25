@@ -33,7 +33,7 @@ export default function HomePage() {
   };
 
   const getPosts = (mode, limit = newLimit) => {
-    let url = `${process.env.REACT_APP_API_URL}/posts`;
+    let url = `${process.env.REACT_APP_API_URL}/get-following/${user.id}`;
 
     if (limit !== null) {
       url += `?limit=${limit}`;
@@ -52,7 +52,7 @@ export default function HomePage() {
       })
       .catch((error) => {
         console.error("Erro ao obter os postInfo:", error);
-        alert("Erro ao obter os postInfo: " + error, "error");
+        simpleModal("Erro ao obter os postInfo: " + error, "error");
       });
   };
   useEffect(() => {
