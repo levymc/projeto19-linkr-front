@@ -76,9 +76,9 @@ export default function SearchInput() {
         usersWithoutisFollowingTrue.length > 0) && (
         <SearchContainer id="search-container">
           {usersWithisFollowingTrue.map((user) => (
-            <UserBox key={user.userId}>
+            <UserBox data-test="user-search" key={user.userId}>
               <img src={user.imageUrl} alt="" />
-              <UserLink data-test="user-search" to={`/user/${user.userId}`}>
+              <UserLink to={`/user/${user.userId}`}>
                 <h1>{user.name}</h1>
                 <div className="follow-btn">
                   <h2>{user.isFollowing ? "following" : "follow"}</h2>
@@ -87,9 +87,9 @@ export default function SearchInput() {
             </UserBox>
           ))}
           {usersWithoutisFollowingTrue.map((user) => (
-            <UserBox key={user.userId}>
+            <UserBox data-test="user-search" key={user.userId}>
               <img src={user.imageUrl} alt="" />
-              <UserLink data-test="user-search" to={`/user/${user.userId}`}>
+              <UserLink to={`/user/${user.userId}`}>
                 <h1>{user.name}</h1>
                 <div className="follow-btn">
                   <h2>{user.isFollowing ? "following" : "follow"}</h2>
