@@ -52,7 +52,7 @@ export default function HomePage() {
       })
       .catch((error) => {
         console.error("Erro ao obter os postInfo:", error);
-        simpleModal("Erro ao obter os postInfo: " + error, "error");
+        alert("Erro ao obter os postInfo: " + error, "error");
       });
   };
   useEffect(() => {
