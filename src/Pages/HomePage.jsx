@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from "axios";
 import Post from "../components/Post";
 import FormPost from "../components/FormPost";
@@ -8,45 +8,74 @@ import { usePostsContext } from "../components/Context";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 import Header from "../components/Header/Header";
+import sleep from "../components/util/sleep";
+import { simpleModal } from "../components/modais/modais";
 import Trending from "../components/Trending";
 import useInterval from "use-interval";
+import InfiniteScroll from "react-infinite-scroller";
 
 export default function HomePage() {
   const navigate = useNavigate();
   const { postsInfos, setPostsInfos, newPost, setNewPost } = usePostsContext();
   const { user } = useContext(AuthContext);
   const storedToken = localStorage.getItem("token");
-  const config = {
-    headers: {
-      Authorization: `Bearer ${storedToken}`,
-    },
-    userId: user.id,
-  };
+  const config = { headers: { Authorization: `Bearer ${storedToken}` } };
   const [cont, setCont] = useState(0);
+  const [amountNewPosts, setAmountNewPosts] = useState(0);
+  const [newLimit, setNewLimit] = useState(() => {
+    const storedLimit = sessionStorage.getItem("newLimit");
+    return storedLimit ? parseInt(storedLimit) : 10;
+  });
 
   const handleBtnNewPosts = () => {
     getPosts(1);
+    setAmountNewPosts(0);
   };
 
-  const getPosts = (mode) => {
-    const url = `${process.env.REACT_APP_API_URL}/get-following/${user.id}`;
+  const getPosts = (mode, limit = newLimit) => {
+    let url = `${process.env.REACT_APP_API_URL}/get-following/${user.id}`;
+
+    if (limit !== null) {
+      url += `?limit=${limit}`;
+    }
 
     axios
       .get(url, config)
       .then((response) => {
         if (mode === 1) {
           setPostsInfos(response.data);
+        } else {
+          const numberOfNewPosts =
+            response.data.posts[0].postId - postsInfos.posts[0].postId;
+          setAmountNewPosts(numberOfNewPosts);
         }
       })
       .catch((error) => {
-        console.error("Error getting posts:", error);
-        alert("Erro ao obter os postInfo: " + error, "error");
+        console.error("Erro ao obter os postInfo:", error);
+        simpleModal("Erro ao obter os postInfo: " + error, "error");
       });
   };
-
   useEffect(() => {
     getPosts(1);
   }, [cont]);
+
+  useEffect(() => {
+    sessionStorage.setItem("newLimit", newLimit.toString());
+    getPosts(1, newLimit);
+  }, [newLimit]);
+
+  useEffect(() => {
+    if (document.getElementById("sentinela")) {
+      const intersectionObserver = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          console.log("Scrollou!");
+          setNewLimit((prevLimit) => prevLimit + 10);
+        }
+      });
+      intersectionObserver.observe(document.getElementById("sentinela"));
+      return () => intersectionObserver.disconnect();
+    }
+  }, [newLimit]);
 
   useInterval(() => {
     getPosts(0);
@@ -62,6 +91,11 @@ export default function HomePage() {
               <span>timeline</span>
             </TitleContainer>
             <FormPost cont={cont} setCont={setCont} />
+            {amountNewPosts > 0 && (
+              <BtnNewPosts onClick={handleBtnNewPosts}>
+                Existem {amountNewPosts} posts novos
+              </BtnNewPosts>
+            )}
             {postsInfos.posts.length > 0 ? (
               postsInfos.posts.map((post, i) => {
                 return (
@@ -85,9 +119,21 @@ export default function HomePage() {
             ) : (
               <span data-test="message">There are no posts yet</span>
             )}
-            <BtnNewPosts onClick={handleBtnNewPosts}>
-              Load New Posts
-            </BtnNewPosts>
+            <Sentinela id="sentinela">
+              {postsInfos.posts.length === newLimit ? (
+                <>
+                  Loading more posts{" "}
+                  <ReactLoading
+                    type={"spin"}
+                    color={"#6D6D6D"}
+                    height={150}
+                    width={70}
+                  />
+                </>
+              ) : (
+                "There are no more posts to load"
+              )}
+            </Sentinela>
           </BodyContentLeft>
           <div className="trending-div">
             <Trending />
